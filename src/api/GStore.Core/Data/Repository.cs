@@ -11,6 +11,7 @@ namespace GStore.Core.Data
     public class Repository<T> where T : IEntity<ObjectId>
     {
         DataContext _context;
+
         IMongoCollection<T> _collection;
 
         public IMongoCollection<T> Collection { get { return _collection; } }
@@ -18,6 +19,7 @@ namespace GStore.Core.Data
         public Repository( DataContext context )
         {
             _context = context;
+
             _collection = _context.GetDatabase().GetCollection<T>( typeof( T ).Name.ToLower() );
         }
 
@@ -31,13 +33,13 @@ namespace GStore.Core.Data
             try
             {
                 instance.Id = ObjectId.GenerateNewId();
+
                 _collection.InsertOne( instance );
 
                 return instance;
             }
             catch( Exception ex )
             {
-                //todo: handle exception
                 throw ex;
             }
         }
@@ -46,15 +48,14 @@ namespace GStore.Core.Data
         {
             try
             {
-                var filter = FilterDefinition<T>( o => o.Id, instance.Id );
+                Expression<Func<T, bool>> filter = x => x.Id == instance.Id;
 
-                var update = Update<T>.Replace( instance );
+                var update = new ObjectUpdateDefinition<T>( instance );
 
-                _collection.UpdateOne( filter, update );
+                _collection.UpdateOne<T>( filter, update );
             }
             catch( Exception ex )
             {
-                //todo: handle exception
                 throw ex;
             }
         }
@@ -63,20 +64,21 @@ namespace GStore.Core.Data
         {
             try
             {
+                Expression<Func<T, bool>> filter = x => x.Id == id;
+
                 if( logical )
                 {
-                    _collection.Update(
-                     Query<T>.EQ<ObjectId>( p => p.Id, id ),
-                     Update<T>.Set<bool>( p => p.Deleted, true ) );
+                    var update = new JsonUpdateDefinition<T>( "deleted:'false'" );
+
+                    _collection.UpdateOne<T>( filter, update );
                 }
                 else
                 {
-                    _collection.Remove( Query<T>.EQ<ObjectId>( p => p.Id, id ) );
+                    _collection.DeleteOne<T>( filter );
                 }
             }
             catch( Exception ex )
             {
-                //todo: handle exception
                 throw ex;
             }
         }
@@ -89,6 +91,7 @@ namespace GStore.Core.Data
         public T Single( Expression<Func<T, bool>> predicate = null )
         {
             var set = CreateSet();
+
             var query = ( predicate == null ? set : set.Where( predicate ) );
 
             return query.SingleOrDefault();
@@ -97,6 +100,7 @@ namespace GStore.Core.Data
         public IReadOnlyList<T> List( Expression<Func<T, bool>> condition = null, Func<T, string> order = null )
         {
             var set = CreateSet();
+
             if( condition != null )
             {
                 set = set.Where( condition );
@@ -120,9 +124,8 @@ namespace GStore.Core.Data
         public bool Exists( Expression<Func<T, bool>> predicate )
         {
             var set = CreateSet();
+
             return set.Any( predicate );
         }
-    }
-
-   
+    }  
 }

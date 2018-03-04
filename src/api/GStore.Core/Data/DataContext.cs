@@ -12,11 +12,16 @@ namespace GStore.Core.Data
         string _mongoDbName;
         MongoClient _client;
 
-        public DataContext( string dburl, string dbname )
+        public DataContext( string dburl )
         {
             _mongoServerUrl = dburl;
-            _mongoDbName = dbname;
+
             _client = new MongoClient( _mongoServerUrl );
+        }
+
+        public DataContext( string dburl, string dbname ) : this( dburl )
+        {
+            _mongoDbName = dbname;
         }
 
         public IMongoDatabase GetDatabase() { return _client.GetDatabase( _mongoDbName ); }
@@ -29,6 +34,7 @@ namespace GStore.Core.Data
         public void DropCollection<T>() where T : IEntity<ObjectId>
         {
             var database = GetDatabase();
+
             var collectionName = typeof( T ).Name.ToLower();
 
             database.DropCollection( collectionName );
