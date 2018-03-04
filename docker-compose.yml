@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  db:
+    image: mongo:3.6.3
+    ports:
+    - 27017:27017 
+    restart: always
+    # environment:
+    volumes:
+    - data:/data/db
+    container_name: gstore-db
+volumes:
+ data:
