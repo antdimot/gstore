@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using GStore.Core.Domain;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -12,32 +13,23 @@ namespace GStore.Core.Data
         string _mongoDbName;
         MongoClient _client;
 
-        public DataContext( string dburl )
+        public DataContext( string dburl, string dbname )
         {
+            _mongoDbName = dbname;
+
             _mongoServerUrl = dburl;
 
             _client = new MongoClient( _mongoServerUrl );
         }
 
-        public DataContext( string dburl, string dbname ) : this( dburl )
+        public IMongoDatabase Database
         {
-            _mongoDbName = dbname;
+            get { return _client.GetDatabase( _mongoDbName ); }
         }
-
-        public IMongoDatabase GetDatabase() { return _client.GetDatabase( _mongoDbName ); }
 
         public void DropDatabase( string dbName )
         {
             _client.DropDatabase( dbName );
-        }
-
-        public void DropCollection<T>() where T : IEntity<ObjectId>
-        {
-            var database = GetDatabase();
-
-            var collectionName = typeof( T ).Name.ToLower();
-
-            database.DropCollection( collectionName );
         }
     }
 }

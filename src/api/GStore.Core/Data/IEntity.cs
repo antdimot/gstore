@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GStore.Core.Data
+namespace GStore.Core.Domain
 {
     public interface IEntity<T>
     {

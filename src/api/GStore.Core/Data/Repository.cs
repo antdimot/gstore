@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using GStore.Core.Domain;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -10,24 +11,28 @@ namespace GStore.Core.Data
 {
     public class Repository<T> where T : IEntity<ObjectId>
     {
-        DataContext _context;
+        public IMongoCollection<T> Collection { get { return _collection; } }
 
+        DataContext _context;
+            
         IMongoCollection<T> _collection;
 
-        public IMongoCollection<T> Collection { get { return _collection; } }
+        string _collectionName;
+        
+        public IQueryable<T> Set { get; private set; }
 
         public Repository( DataContext context )
         {
             _context = context;
 
-            _collection = _context.GetDatabase().GetCollection<T>( typeof( T ).Name.ToLower() );
+            _collectionName = typeof( T ).Name.ToLower();
+
+            _collection = _context.Database.GetCollection<T>( _collectionName );
+
+            Set = _collection.AsQueryable<T>();
         }
 
-        private IQueryable<T> CreateSet()
-        {
-            return _collection.AsQueryable<T>();
-        }
-
+        #region WRITE METHODS
         public T Insert( T instance )
         {
             try
@@ -83,49 +88,51 @@ namespace GStore.Core.Data
             }
         }
 
-        public T GetById( ObjectId id )
+        public void InitColletion()
         {
-            return this.Single( o => o.Id == id );
+            _context.Database.DropCollection( _collectionName );
         }
+        #endregion
 
-        public T Single( Expression<Func<T, bool>> predicate = null )
+        #region QUERY METHODS
+        public T GetSingle( Expression<Func<T, bool>> predicate )
         {
-            var set = CreateSet();
-
-            var query = ( predicate == null ? set : set.Where( predicate ) );
+            var query = Set.Where( predicate );
 
             return query.SingleOrDefault();
         }
 
-        public IReadOnlyList<T> List( Expression<Func<T, bool>> condition = null, Func<T, string> order = null )
+        public T GetById( ObjectId id )
         {
-            var set = CreateSet();
+            return this.GetSingle( o => o.Id == id );
+        }
 
+        public IReadOnlyList<T> GetList( Expression<Func<T, bool>> condition = null, Func<T, string> order = null )
+        {
+            var query = this.Set;
+                 
             if( condition != null )
             {
-                set = set.Where( condition );
+                query = query.Where( condition );
             }
 
             if( order != null )
             {
-                return set.OrderBy( order ).ToList();
+                return query.OrderBy( order ).ToList();
             }
 
-            return set.ToList();
+            return query.ToList();
         }
 
         public int Count( Expression<Func<T, bool>> predicate = null )
         {
-            var set = CreateSet();
-
-            return ( predicate == null ? set.Count() : set.Count( predicate ) );
+            return ( predicate == null ? Set.Count() : Set.Count( predicate ) );
         }
 
         public bool Exists( Expression<Func<T, bool>> predicate )
         {
-            var set = CreateSet();
-
-            return set.Any( predicate );
+            return Set.Any( predicate );
         }
-    }  
+        #endregion
+    }
 }
