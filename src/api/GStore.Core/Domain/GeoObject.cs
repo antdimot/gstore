@@ -1,5 +1,4 @@
-﻿using GStore.Core.Data;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Text;
 
 namespace GStore.Core.Domain
 {
-    public class User : IEntity<ObjectId>
+    public class GeoObject : IEntity<ObjectId>
     {
         [BsonElement( "_id" )]
         public ObjectId Id { get; set; }
@@ -15,10 +14,13 @@ namespace GStore.Core.Domain
         [BsonElement( "deleted" )]
         public bool Deleted { get; set; }
 
-        [BsonElement( "firstname" )]
-        public string Firstname { get; set; }
+        [BsonElement( "data" )]
+        public Object ObjectData { get; set; }
 
-        [BsonElement( "lastname" )]
-        public string Lastname { get; set; }
+        [BsonElement( "Lat" )]
+        public double Latitude { get; set; }
+
+        [BsonElement( "Lon" )]
+        public double Longitude { get; set; }
     }
 }

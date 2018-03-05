@@ -6,22 +6,23 @@ using GStore.Core.Data;
 using GStore.Core.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace GStore.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/User")]
+    [Route( "api/user" )]
     public class UserController : BaseController
     {
+        public UserController( IConfiguration config, ILogger<UserController> logger, UnitOfWork unitOfWork ) : base( config, logger, unitOfWork )
+        {
+        }
+
         [HttpGet]
         public IEnumerable<User> Get()
         {
-            var _connectionString = "mongodb://localhost:27017";
-            var _dbname = "demo";
-
-            var context = new DataContext( _connectionString, _dbname );
-
-            var repository = new Repository<User>( context );
+            var repository = UnitOfWork.Repository<User>();
 
             var result = repository.GetList();
 

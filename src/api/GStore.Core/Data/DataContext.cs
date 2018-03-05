@@ -1,4 +1,6 @@
 ﻿using GStore.Core.Domain;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -9,9 +11,23 @@ namespace GStore.Core.Data
 {
     public class DataContext
     {
+        public IConfiguration Configuration { get; private set; }
+        public ILogger Logger { get; private set; }
+
         string _mongoServerUrl;
         string _mongoDbName;
         MongoClient _client;
+
+        public DataContext( IConfiguration config, ILogger<DataContext> logger )
+        {
+            Configuration = config;
+            Logger = logger;
+
+            _mongoServerUrl = Configuration.GetSection( "GStore" ).GetValue<string>( "DBconn" );
+            _mongoDbName = Configuration.GetSection( "GStore" ).GetValue<string>( "DBname" );
+
+            _client = new MongoClient( _mongoServerUrl );
+        }
 
         public DataContext( string dburl, string dbname )
         {
@@ -21,6 +37,8 @@ namespace GStore.Core.Data
 
             _client = new MongoClient( _mongoServerUrl );
         }
+
+        public UnitOfWork UnitOfWork { get; set; }
 
         public IMongoDatabase Database
         {
