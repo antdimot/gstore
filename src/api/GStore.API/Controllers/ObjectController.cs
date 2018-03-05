@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using GStore.Core.Data;
 using GStore.Core.Domain;
@@ -26,19 +28,28 @@ namespace GStore.API.Controllers
 
             var result = repository.GetList();
 
+            Logger.LogDebug( "GET - GeoObjects" );
+
             return result;
         }
 
         [HttpPost]
         public void Post( double lat, double lon )
         {
-            var repository = UnitOfWork.Repository<GeoObject>();
+            using( var reader = new StreamReader( Request.Body, Encoding.UTF8 ) )
+            {
+                var data = reader.ReadToEndAsync();
 
-            var result = repository.Insert( new GeoObject {
-                Latitude = lat,
-                Longitude = lon,
-                ObjectData = ""
-            } );
+                var repository = UnitOfWork.Repository<GeoObject>();
+
+                var result = repository.Insert( new GeoObject {
+                    Latitude = lat,
+                    Longitude = lon,
+                    ObjectData = data.Result
+                } );
+
+                Logger.LogDebug( "POST - GeoObject" );
+            }        
         }
     }
 }

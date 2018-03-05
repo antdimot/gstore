@@ -22,5 +22,11 @@ namespace GStore.Core.Domain
 
         [BsonElement( "Lon" )]
         public double Longitude { get; set; }
+
+        [BsonElement( "name" )]
+        public string Name { get; set; }
+
+        [BsonElement( "description" )]
+        public string Description { get; set; }
     }
 }

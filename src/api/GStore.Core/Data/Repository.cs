@@ -1,4 +1,5 @@
 ﻿using GStore.Core.Domain;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -45,6 +46,8 @@ namespace GStore.Core.Data
             }
             catch( Exception ex )
             {
+                _context.Logger.LogError( ex, "Insert" );
+
                 throw ex;
             }
         }
@@ -61,6 +64,8 @@ namespace GStore.Core.Data
             }
             catch( Exception ex )
             {
+                _context.Logger.LogError( ex, "Update" );
+
                 throw ex;
             }
         }
@@ -84,6 +89,8 @@ namespace GStore.Core.Data
             }
             catch( Exception ex )
             {
+                _context.Logger.LogError( ex, "Delete" );
+
                 throw ex;
             }
         }
@@ -97,9 +104,22 @@ namespace GStore.Core.Data
         #region QUERY METHODS
         public T GetSingle( Expression<Func<T, bool>> predicate )
         {
-            var query = Set.Where( predicate );
+            try
+            {
+                var query = Set.Where( predicate );
 
-            return query.SingleOrDefault();
+                var result =  query.SingleOrDefault();
+
+                _context.Logger.LogDebug( "REPOSITORY - GetSingle" );
+
+                return result;
+            }
+            catch( Exception ex )
+            {
+                _context.Logger.LogError( ex, "GetSingle" );
+
+                throw ex;
+            }
         }
 
         public T GetById( ObjectId id )
@@ -109,29 +129,68 @@ namespace GStore.Core.Data
 
         public IReadOnlyList<T> GetList( Expression<Func<T, bool>> condition = null, Func<T, string> order = null )
         {
-            var query = this.Set;
-                 
-            if( condition != null )
+            try
             {
-                query = query.Where( condition );
-            }
+                var query = this.Set;
 
-            if( order != null )
+                if( condition != null )
+                {
+                    query = query.Where( condition );
+                }
+
+                if( order != null )
+                {
+                    return query.OrderBy( order ).ToList();
+                }
+
+                var result = query.ToList();
+
+                _context.Logger.LogDebug( "REPOSITORY - GetList" );
+
+                return result;
+            }
+            catch( Exception ex )
             {
-                return query.OrderBy( order ).ToList();
-            }
+                _context.Logger.LogError( ex, "GetList" );
 
-            return query.ToList();
+                throw ex;
+            }
         }
 
         public int Count( Expression<Func<T, bool>> predicate = null )
         {
-            return ( predicate == null ? Set.Count() : Set.Count( predicate ) );
+            try
+            {
+                var result = ( predicate == null ? Set.Count() : Set.Count( predicate ) );
+
+                _context.Logger.LogDebug( "REPOSITORY - Count" );
+
+                return result;
+            }
+            catch( Exception ex )
+            {
+                _context.Logger.LogError( ex, "Count" );
+
+                throw ex;
+            }
         }
 
         public bool Exists( Expression<Func<T, bool>> predicate )
         {
-            return Set.Any( predicate );
+            try
+            {
+                var result = Set.Any( predicate );
+
+                _context.Logger.LogDebug( "REPOSITORY - Exists" );
+
+                return result;
+            }
+            catch( Exception ex )
+            {
+                _context.Logger.LogError( ex, "Exists" );
+
+                throw;
+            }
         }
         #endregion
     }

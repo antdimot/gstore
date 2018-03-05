@@ -26,6 +26,8 @@ namespace GStore.API.Controllers
 
             var result = repository.GetList();
 
+            Logger.LogDebug( "GET - Users" );
+
             return result;
         }
     }
