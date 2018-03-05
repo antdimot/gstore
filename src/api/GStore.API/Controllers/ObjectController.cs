@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 
 namespace GStore.API.Controllers
 {
@@ -22,11 +23,11 @@ namespace GStore.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<GeoObject> Get()
+        public IEnumerable<GeoObject> Get( string userId )
         {
             var repository = UnitOfWork.Repository<GeoObject>();
 
-            var result = repository.GetList();
+            var result = repository.GetList( o => o.UserId == ObjectId.Parse( userId ) );
 
             Logger.LogDebug( "GET - GeoObjects" );
 
@@ -34,7 +35,7 @@ namespace GStore.API.Controllers
         }
 
         [HttpPost]
-        public void Post( double lat, double lon )
+        public void Post( string userId, double lat, double lon )
         {
             using( var reader = new StreamReader( Request.Body, Encoding.UTF8 ) )
             {
@@ -45,7 +46,8 @@ namespace GStore.API.Controllers
                 var result = repository.Insert( new GeoObject {
                     Latitude = lat,
                     Longitude = lon,
-                    ObjectData = data.Result
+                    ObjectData = data.Result,
+                    UserId = ObjectId.Parse( userId )
                 } );
 
                 Logger.LogDebug( "POST - GeoObject" );

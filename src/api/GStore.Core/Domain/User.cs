@@ -12,13 +12,22 @@ namespace GStore.Core.Domain
         [BsonElement( "_id" )]
         public ObjectId Id { get; set; }
 
-        [BsonElement( "deleted" )]
-        public bool Deleted { get; set; }
+        [BsonElement( "del" )]
+        public bool Deleted { get; set; } = false;
 
-        [BsonElement( "firstname" )]
+        [BsonElement( "fname" )]
         public string Firstname { get; set; }
 
-        [BsonElement( "lastname" )]
+        [BsonElement( "lname" )]
         public string Lastname { get; set; }
+
+        [BsonElement( "uname" )]
+        public string Username { get; set; }
+
+        [BsonElement( "pword" )]
+        public string Password { get; set; }
+
+        [BsonElement( "email" )]
+        public string Email { get; set; }
     }
 }
