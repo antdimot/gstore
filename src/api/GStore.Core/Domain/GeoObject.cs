@@ -29,7 +29,10 @@ namespace GStore.Core.Domain
         [BsonElement( "descr" )]
         public string Description { get; set; }
 
-        [BsonElement( "uid" )]
+        [BsonElement("ctype")]
+        public string ContentType { get; set; }
+
+        [BsonElement("uid")]
         public ObjectId UserId { get; set; }
     }
 }

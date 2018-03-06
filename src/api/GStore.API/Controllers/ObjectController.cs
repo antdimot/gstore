@@ -23,11 +23,11 @@ namespace GStore.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<GeoObject> Get( string userId )
+        public IEnumerable<GeoObject> Get( string uid )
         {
             var repository = UnitOfWork.Repository<GeoObject>();
 
-            var result = repository.GetList( o => o.UserId == ObjectId.Parse( userId ) );
+            var result = repository.GetList( o => o.UserId == ObjectId.Parse( uid ) );
 
             Logger.LogDebug( "GET - GeoObjects" );
 
@@ -35,7 +35,7 @@ namespace GStore.API.Controllers
         }
 
         [HttpPost]
-        public void Post( string userId, double lat, double lon )
+        public void Post( string uid, double lat, double lon )
         {
             using( var reader = new StreamReader( Request.Body, Encoding.UTF8 ) )
             {
@@ -47,7 +47,7 @@ namespace GStore.API.Controllers
                     Latitude = lat,
                     Longitude = lon,
                     ObjectData = data.Result,
-                    UserId = ObjectId.Parse( userId )
+                    UserId = ObjectId.Parse( uid )
                 } );
 
                 Logger.LogDebug( "POST - GeoObject" );

@@ -27,6 +27,7 @@ var addObjects = ()=> {
         "lon": "1",
         "data": "Hello World!",
         "name": "Example",
+        "ctype": "text/plain",
         "uid" : user1Id
     } ] )
 };
