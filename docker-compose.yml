@@ -1,6 +1,21 @@
-version: '3'
+version: '2'
 
 services:
+  api:
+    build: .
+    image: gstore
+    environment:
+    - ASPNETCORE_URLS=http://+:5000
+    - ASPNETCORE_ENVIRONMENT=Staging
+    ports:
+    - 5000:5000
+    links: 
+    - db:gstore-db
+    depends_on:
+    - db
+    volumes:
+    - data:/srv/gstore
+    container_name: gstore-api
   db:
     image: mongo:3.6.3
     ports:
@@ -11,4 +26,4 @@ services:
     - data:/data/db
     container_name: gstore-db
 volumes:
- data:
+  data:
