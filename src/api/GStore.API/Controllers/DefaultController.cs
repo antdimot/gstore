@@ -19,6 +19,8 @@ namespace GStore.API.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            Logger.LogDebug( "GET[Default]" );
+
             return new string[] { "Hello", "World!" };
         }
     }

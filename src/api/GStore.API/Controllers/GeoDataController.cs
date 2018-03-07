@@ -25,11 +25,11 @@ namespace GStore.API.Controllers
         [HttpGet]
         public ObjectResult Get( string id )
         {
+            Logger.LogDebug( "GET[GeoData]" );
+
             var repository = UnitOfWork.Repository<GeoData>();
 
             var result = repository.GetById( ObjectId.Parse( id ) );
-
-            Logger.LogDebug( "GeoData:GET" );
 
             if( result == null )
             {
@@ -40,24 +40,36 @@ namespace GStore.API.Controllers
         }
 
         [HttpPost]
-        public void Post( string uid, double lat, double lon )
+        public IActionResult Post( string uid, double lat, double lon, string content )
         {
-            using( var reader = new StreamReader( Request.Body, Encoding.UTF8 ) )
-            {
-                var data = reader.ReadToEndAsync();
+            Logger.LogDebug( "POST[GeoData]" );
 
-                var repository = UnitOfWork.Repository<GeoData>();
+            var repository = UnitOfWork.Repository<GeoData>();
 
-                var result = repository.Insert( new GeoData {
-                    Latitude = lat,
-                    Longitude = lon,
-                    Content = data,
-                    ContentType = Util.ContentType.Text,
-                    UserId = ObjectId.Parse( uid )
-                } );
+            var result = repository.Insert( new GeoData {
+                Latitude = lat,
+                Longitude = lon,
+                Content = content,
+                ContentType = Util.ContentType.Text,
+                UserId = ObjectId.Parse( uid )
+            } );
 
-                Logger.LogDebug( "GeoData:STORE" );
-            }        
+            return Ok();
+
+            //using( var reader = new StreamReader( Request.Body, Encoding.UTF8 ) )
+            //{
+            //    var data = reader.ReadToEndAsync();
+
+            //    var repository = UnitOfWork.Repository<GeoData>();
+
+            //    var result = repository.Insert( new GeoData {
+            //        Latitude = lat,
+            //        Longitude = lon,
+            //        Content = data,
+            //        ContentType = Util.ContentType.Text,
+            //        UserId = ObjectId.Parse( uid )
+            //    } );
+            //}        
         }
     }
 }

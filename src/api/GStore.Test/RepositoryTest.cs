@@ -55,7 +55,10 @@ namespace GStore.Test
 
             var result = work.Repository<User>().Insert( new User {
                 Firstname = "firstname",
-                Lastname = "lastname"
+                Lastname = "lastname",
+                Username = "username",
+                Password = "password",
+                Email = "email"
             } );
 
             Assert.IsNotNull( result.Id, "no data found" );

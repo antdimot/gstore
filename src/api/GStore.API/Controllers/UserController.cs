@@ -29,13 +29,14 @@ namespace GStore.API.Controllers
 
             var result = users.Select(u => new UserResult
             {
+                Id = u.Id.ToString(),  
                 Firstname = u.Firstname,
                 Lastname = u.Lastname,
                 Username = u.Username,
                 Email = u.Email
             });
 
-            Logger.LogDebug( "User:GET" );
+            Logger.LogDebug( "GET[User]" );
 
             return result;
         }

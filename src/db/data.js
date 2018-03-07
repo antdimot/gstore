@@ -18,9 +18,9 @@ var addUsers = ()=> {
 addUsers();
 
 var obj1Id = ObjectId();
-var addObjects = ()=> {
-    db.geoobject.drop();
-    db.geoobject.insert( [
+var addData = ()=> {
+    db.geodata.drop();
+    db.geodata.insert( [
     {
         "_id": obj1Id,
         "lat": "1",
@@ -31,4 +31,4 @@ var addObjects = ()=> {
         "uid" : user1Id
     } ] )
 };
-addObjects();
+addData();
