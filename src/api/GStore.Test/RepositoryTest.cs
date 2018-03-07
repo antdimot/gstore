@@ -1,66 +1,64 @@
 using GStore.Core.Data;
 using GStore.Core.Domain;
 using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Driver;
+using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace GStore.Test
 {
     [TestClass]
     public class RepositoryTest
     {
-        private static string _connectionString;
-        private static string _dbname;
-
-        //[ClassInitialize]
-        //public static void ClassInit( TestContext context ) { }
+        DataContext _context;
 
         [TestInitialize]
         public void Initialize()
         {
-            _connectionString = "mongodb://localhost:27017";
-            _dbname = "demo";
+            var configurationBuilder = new ConfigurationBuilder()
+                                             .SetBasePath( Directory.GetCurrentDirectory() )
+                                             .AddJsonFile( "appsettings.json" );
+
+            var configuration = configurationBuilder.Build();
+
+            var logger = new LoggerFactory().CreateLogger<DataContext>();
+
+            _context = new DataContext( configuration, logger );
         }
 
         [TestMethod]
         public void GetList_shouldreturn_notempty_list()
-        {
-            
+        {  
+            var work = new UnitOfWork ( _context );
 
-            //var context = new DataContext( _connectionString, _dbname );
+            var result = work.Repository<User>().GetList();
 
-            //var work = new UnitOfWork( context );
-
-            //var result = work.Repository<User>().GetList();
-
-            //Assert.IsTrue( result.Count > 0, "no data found" );
+            Assert.IsTrue( result.Count > 0, "no data found" );
         }
 
-        //[TestMethod]
-        //public void GetSingle_shouldreturn_notnull()
-        //{
-        //    var context = new DataContext( _connectionString, _dbname );
+        [TestMethod]
+        public void GetSingle_shouldreturn_notnull()
+        {
+            var work = new UnitOfWork( _context );
 
-        //    var work = new UnitOfWork( context );
+            var result = work.Repository<User>().GetSingle( u => u.Firstname == "antonio" );
 
-        //    var result = work.Repository<User>().GetSingle( u =>u.Firstname == "antonio" );
+            Assert.IsNotNull( result, "no data found" );
+        }
 
-        //    Assert.IsNotNull( result, "no data found" );
-        //}
+        [TestMethod]
+        public void Insert_shouldreturn_newid()
+        {
+            var work = new UnitOfWork( _context );
 
-        //[TestMethod]
-        //public void Insert_shouldreturn_newid()
-        //{
-        //    var context = new DataContext( _connectionString, _dbname );
+            var result = work.Repository<User>().Insert( new User {
+                Firstname = "firstname",
+                Lastname = "lastname"
+            } );
 
-        //    var work = new UnitOfWork( context );
-
-        //    var result = work.Repository<User>().Insert( new User {
-        //        Firstname = "firstname",
-        //        Lastname = "lastname"
-        //    } );
-
-        //    Assert.IsNotNull( result.Id, "no data found" );
-        //}
+            Assert.IsNotNull( result.Id, "no data found" );
+        }
     }
 }
