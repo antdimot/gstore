@@ -12,15 +12,11 @@ namespace GStore.Core.Data
 {
     public class Repository<T> where T : IEntity<ObjectId>
     {
-        public IMongoCollection<T> Collection { get { return _collection; } }
-
         DataContext _context;
             
         IMongoCollection<T> _collection;
 
-        string _collectionName;
-        
-        public IQueryable<T> Set { get; private set; }
+        string _collectionName; 
 
         public Repository( DataContext context )
         {
@@ -29,8 +25,6 @@ namespace GStore.Core.Data
             _collectionName = typeof( T ).Name.ToLower();
 
             _collection = _context.Database.GetCollection<T>( _collectionName );
-
-            Set = _collection.AsQueryable<T>();
         }
 
         #region WRITE METHODS
@@ -102,15 +96,15 @@ namespace GStore.Core.Data
         #endregion
 
         #region QUERY METHODS
-        public T GetSingle( Expression<Func<T, bool>> predicate )
+        public T GetSingle( Expression<Func<T, bool>> condition )
         {
+            _context.Logger.LogDebug( "REPOSITORY - GetSingle" );
+
             try
             {
-                var query = Set.Where( predicate );
+                var query = _collection.Find<T>( condition );
 
                 var result =  query.SingleOrDefault();
-
-                _context.Logger.LogDebug( "REPOSITORY - GetSingle" );
 
                 return result;
             }
@@ -127,27 +121,29 @@ namespace GStore.Core.Data
             return this.GetSingle( o => o.Id == id );
         }
 
-        public IReadOnlyList<T> GetList( Expression<Func<T, bool>> condition = null, Func<T, string> order = null )
+        public IReadOnlyList<T> GetList( Expression<Func<T, bool>> condition = null, Expression<Func<T, object>> order = null )
         {
+            _context.Logger.LogDebug( "REPOSITORY - GetList" );
+
             try
             {
-                var query = this.Set;
+                IFindFluent<T, T> query;
 
                 if( condition != null )
                 {
-                    query = query.Where( condition );
+                    query = _collection.Find<T>( condition );
+                }
+                else
+                {
+                    query = _collection.Find<T>( _ => true );
                 }
 
                 if( order != null )
                 {
-                    return query.OrderBy( order ).ToList();
+                    return query.SortBy<T, T>( order ).ToList();
                 }
 
-                var result = query.ToList();
-
-                _context.Logger.LogDebug( "REPOSITORY - GetList" );
-
-                return result;
+                return query.ToList();
             }
             catch( Exception ex )
             {
@@ -157,15 +153,15 @@ namespace GStore.Core.Data
             }
         }
 
-        public int Count( Expression<Func<T, bool>> predicate = null )
+        public long Count( Expression<Func<T, bool>> condition = null )
         {
+            _context.Logger.LogDebug( "REPOSITORY - Count" );
+
             try
             {
-                var result = ( predicate == null ? Set.Count() : Set.Count( predicate ) );
+                if( condition == null ) return _collection.Count( _ => true );
 
-                _context.Logger.LogDebug( "REPOSITORY - Count" );
-
-                return result;
+                return _collection.Count( condition );
             }
             catch( Exception ex )
             {
@@ -175,15 +171,15 @@ namespace GStore.Core.Data
             }
         }
 
-        public bool Exists( Expression<Func<T, bool>> predicate )
+        public bool Exists( Expression<Func<T, bool>> condition )
         {
+            _context.Logger.LogDebug( "REPOSITORY - Exists" );
+
             try
             {
-                var result = Set.Any( predicate );
+                var result = this.Count( condition );
 
-                _context.Logger.LogDebug( "REPOSITORY - Exists" );
-
-                return result;
+                return result > 0;
             }
             catch( Exception ex )
             {
