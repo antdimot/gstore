@@ -23,11 +23,14 @@ var obj3Id = ObjectId();
 var obj4Id = ObjectId();
 var addData = ()=> {
     db.geodata.drop();
+    db.geodata.createIndex({ location: "2dsphere" })
     db.geodata.insert( [
     {
         "_id": obj1Id,
-        "lat": "40.848082",
-        "lon": "14.283069",
+        "location": {
+            "type": "Point",
+            "coordinates": [40.848082,40.848082]
+         },
         "content": "Mate naples site 2",
         "name": "Mate2",
         "ctype": "text/plain",
@@ -35,8 +38,10 @@ var addData = ()=> {
     },
     {
         "_id": obj2Id,
-        "lat": "40.850524",
-        "lon": "14.274842",
+        "location": {
+            "type": "Point",
+            "coordinates": [40.850524,40.850524]
+         },
         "content": "Hotel Ramada",
         "name": "Hotel",
         "ctype": "text/plain",
@@ -44,8 +49,10 @@ var addData = ()=> {
     },
     {
         "_id": obj3Id,
-        "lat": "40.852815",
-        "lon": "14.271879",
+        "location": {
+            "type": "Point",
+            "coordinates": [14.271879,40.852815]
+         },
         "content": "Naples train station",
         "name": "Station",
         "ctype": "text/plain",
@@ -53,8 +60,10 @@ var addData = ()=> {
     },
     {
         "_id": obj4Id,
-        "lat": "40.681562",
-        "lon": "14.774473",
+        "location": {
+            "type": "Point",
+            "coordinates": [14.774473,40.681562]
+         },
         "content": "Mate naples site 1",
         "name": "Mate1",
         "ctype": "text/plain",

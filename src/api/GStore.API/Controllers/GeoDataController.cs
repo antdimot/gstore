@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
+using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace GStore.API.Controllers
 {
@@ -47,29 +48,13 @@ namespace GStore.API.Controllers
             var repository = UnitOfWork.Repository<GeoData>();
 
             var result = repository.Insert( new GeoData {
-                Latitude = lat,
-                Longitude = lon,
+                Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates> (new GeoJson2DGeographicCoordinates( lon, lat) ),
                 Content = content,
                 ContentType = Util.ContentType.Text,
                 UserId = ObjectId.Parse( uid )
             } );
 
             return Ok();
-
-            //using( var reader = new StreamReader( Request.Body, Encoding.UTF8 ) )
-            //{
-            //    var data = reader.ReadToEndAsync();
-
-            //    var repository = UnitOfWork.Repository<GeoData>();
-
-            //    var result = repository.Insert( new GeoData {
-            //        Latitude = lat,
-            //        Longitude = lon,
-            //        Content = data,
-            //        ContentType = Util.ContentType.Text,
-            //        UserId = ObjectId.Parse( uid )
-            //    } );
-            //}        
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver.GeoJsonObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,11 +18,14 @@ namespace GStore.Core.Domain
         [BsonElement( "content" )]
         public Object Content { get; set; }
 
-        [BsonElement( "lat" )]
-        public double Latitude { get; set; }
+        //[BsonElement( "lat" )]
+        //public double Latitude { get; set; }
 
-        [BsonElement( "lon" )]
-        public double Longitude { get; set; }
+        //[BsonElement( "lon" )]
+        //public double Longitude { get; set; }
+
+        [BsonElement( "location" )]
+        public GeoJsonPoint<GeoJson2DGeographicCoordinates> Location { get; set; }
 
         [BsonElement( "name" )]
         public string Name { get; set; }
