@@ -35,7 +35,7 @@ namespace GStore.API.Controllers
                 Email = u.Email
             });
 
-            Logger.LogDebug( "GET - Users" );
+            Logger.LogDebug( "User:GET" );
 
             return result;
         }

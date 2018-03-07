@@ -29,15 +29,6 @@ namespace GStore.Core.Data
             _client = new MongoClient( _mongoServerUrl );
         }
 
-        public DataContext( string dburl, string dbname )
-        {
-            _mongoDbName = dbname;
-
-            _mongoServerUrl = dburl;
-
-            _client = new MongoClient( _mongoServerUrl );
-        }
-
         public UnitOfWork UnitOfWork { get; set; }
 
         public IMongoDatabase Database

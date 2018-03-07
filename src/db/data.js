@@ -25,7 +25,7 @@ var addObjects = ()=> {
         "_id": obj1Id,
         "lat": "1",
         "lon": "1",
-        "data": "Hello World!",
+        "content": "Hello World!",
         "name": "Example",
         "ctype": "text/plain",
         "uid" : user1Id

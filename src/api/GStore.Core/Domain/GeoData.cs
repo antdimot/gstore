@@ -6,7 +6,7 @@ using System.Text;
 
 namespace GStore.Core.Domain
 {
-    public class GeoObject : IEntity<ObjectId>
+    public class GeoData : IEntity<ObjectId>
     {
         [BsonElement( "_id" )]
         public ObjectId Id { get; set; }
@@ -14,8 +14,8 @@ namespace GStore.Core.Domain
         [BsonElement( "del" )]
         public bool Deleted { get; set; } = false;
 
-        [BsonElement( "data" )]
-        public Object ObjectData { get; set; }
+        [BsonElement( "content" )]
+        public Object Content { get; set; }
 
         [BsonElement( "lat" )]
         public double Latitude { get; set; }
