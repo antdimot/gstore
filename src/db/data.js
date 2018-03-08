@@ -29,7 +29,7 @@ var addData = ()=> {
         "_id": obj1Id,
         "location": {
             "type": "Point",
-            "coordinates": [40.848082,40.848082]
+            "coordinates": [14.283069,40.848082]
          },
         "content": "Mate naples site 2",
         "name": "Mate2",
@@ -40,7 +40,7 @@ var addData = ()=> {
         "_id": obj2Id,
         "location": {
             "type": "Point",
-            "coordinates": [40.850524,40.850524]
+            "coordinates": [14.274900,40.850506]
          },
         "content": "Hotel Ramada",
         "name": "Hotel",

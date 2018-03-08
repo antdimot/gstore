@@ -17,7 +17,6 @@ using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace GStore.API.Controllers
 {
-    //[Produces("application/json")]
     [Route( "api/geodata" )]
     public class GeoDataController : BaseController
     {
@@ -31,19 +30,18 @@ namespace GStore.API.Controllers
 
             var repository = UnitOfWork.Repository<GeoData>();
 
-            var geodata = repository.GetById( ObjectId.Parse( id ) );
-
-            if( geodata == null )
+            var item = repository.GetById( ObjectId.Parse( id ) );
+            if( item == null )
             {
                 return NotFound( id );
             }
 
             return Ok( new GeoResult {
-                Id = geodata.Id.ToString(),
-                Longitude = geodata.Location.Coordinates.Longitude,
-                Latitude = geodata.Location.Coordinates.Latitude,
-                Content = geodata.Content,
-                ContentType = geodata.ContentType
+                Id = item.Id.ToString(),
+                Longitude = item.Location.Coordinates.Longitude,
+                Latitude = item.Location.Coordinates.Latitude,
+                Content = item.Content,
+                ContentType = item.ContentType
             } );
         }
 
@@ -55,33 +53,39 @@ namespace GStore.API.Controllers
 
             var repository = UnitOfWork.Repository<GeoData>();
 
-            var geodata = repository.GetById( ObjectId.Parse( id ) );
-
-            if( geodata == null )
+            var item = repository.GetById( ObjectId.Parse( id ) );
+            if( item == null )
             {
                 return NotFound( id );
             }
 
-            return Ok( geodata.Content );
+            return Ok( item.Content );
         }
 
-        //[HttpGet]
-        //[Route( "location" )]
-        //public ObjectResult GetByLocation( double lon, double lat )
-        //{
-        //    Logger.LogDebug( "GET-LOCATION[GeoData]" );
+        [HttpGet]
+        [Route( "location" )]
+        public ObjectResult GetByLocation( double lon, double lat, double distance )
+        {
+            Logger.LogDebug( "GET-LOCATION[GeoData]" );
 
-        //    var repository = UnitOfWork.Repository<GeoData>();
+            var repository = UnitOfWork.GeoRepository<GeoData>();
 
-        //    var geoData = repository.GetById( ObjectId.Parse( id ) );
+            var items = repository.GetByLocation( lon, lat, distance );
+            if( items.Count == 0 )
+            {
+                return NotFound( new { lon, lat, distance } );
+            }
 
-        //    if( geoData == null )
-        //    {
-        //        return NotFound( new { lon, lat } );
-        //    }
+            var result = items.Select( obj => new GeoResult {
+                Id = obj.Id.ToString(),
+                Longitude = obj.Location.Coordinates.Longitude,
+                Latitude = obj.Location.Coordinates.Latitude,
+                Content = obj.Content,
+                ContentType = obj.ContentType
+            } );
 
-        //    return Ok( geoData.Content );
-        //}
+            return Ok( result );
+        }
 
         [HttpPost]
         public IActionResult Post( string uid, double lon, double lat, string content )

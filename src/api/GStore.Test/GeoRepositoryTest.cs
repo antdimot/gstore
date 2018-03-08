@@ -31,13 +31,11 @@ namespace GStore.Test
         [TestMethod]
         public void GetByLocation_shouldreturn_notemptylist()
         {
-            var repository = new GeoRepository<GeoData>( _context );
+            var work = new UnitOfWork( _context );
 
-            var radius = 50 / 3963.2;
+            var result = work.GeoRepository<GeoData>().GetByLocation( 14.271879, 40.852815, 1.05 );
 
-            var result = repository.GetByLocation( 14.271879, 40.852815, radius );
-
-            Assert.IsNotNull( result.Count > 0, "no data found" );
+            Assert.IsTrue( result.Count == 2, "distance is not correct" );
         }
     }
 }

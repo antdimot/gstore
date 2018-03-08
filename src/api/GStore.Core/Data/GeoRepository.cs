@@ -13,17 +13,19 @@ namespace GStore.Core.Data
         {
         }
 
-        public IReadOnlyList<T> GetByLocation( double longitude, double latitude, double radius )
+        public IReadOnlyList<T> GetByLocation( double longitude, double latitude, double distance )
         {
             _context.Logger.LogDebug( "REPOSITORY - GetByLocation" );
 
             try
             {
+                var radius = distance / 6378.1; // calc radius
+
                 var filterBuilder = new FilterDefinitionBuilder<T>();
 
                 var filter = filterBuilder.GeoWithinCenterSphere(
-                                                o => o.Location,
-                                                longitude, latitude, radius );
+                                o => o.Location,
+                                longitude, latitude, radius );
 
                 var query = _context.Database.GetCollection<T>( _collectionName )
                                              .Find<T>( filter );
