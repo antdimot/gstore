@@ -12,11 +12,11 @@ namespace GStore.Core.Data
 {
     public class Repository<T> where T : IEntity<ObjectId>
     {
-        DataContext _context;
-            
-        IMongoCollection<T> _collection;
+        protected DataContext _context;
 
-        string _collectionName; 
+        protected IMongoCollection<T> _collection;
+
+        protected string _collectionName; 
 
         public Repository( DataContext context )
         {
@@ -187,7 +187,7 @@ namespace GStore.Core.Data
 
                 throw;
             }
-        }
+        }   
         #endregion
     }
 }

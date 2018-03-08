@@ -65,23 +65,23 @@ namespace GStore.API.Controllers
             return Ok( geodata.Content );
         }
 
-        [HttpGet]
-        [Route( "location" )]
-        public ObjectResult GetByLocation( double lon, double lat )
-        {
-            Logger.LogDebug( "GET-LOCATION[GeoData]" );
+        //[HttpGet]
+        //[Route( "location" )]
+        //public ObjectResult GetByLocation( double lon, double lat )
+        //{
+        //    Logger.LogDebug( "GET-LOCATION[GeoData]" );
 
-            var repository = UnitOfWork.Repository<GeoData>();
+        //    var repository = UnitOfWork.Repository<GeoData>();
 
-            var geoData = repository.GetById( ObjectId.Parse( id ) );
+        //    var geoData = repository.GetById( ObjectId.Parse( id ) );
 
-            if( geoData == null )
-            {
-                return NotFound( new { lon, lat } );
-            }
+        //    if( geoData == null )
+        //    {
+        //        return NotFound( new { lon, lat } );
+        //    }
 
-            //return Ok( geoData.Content );
-        }
+        //    return Ok( geoData.Content );
+        //}
 
         [HttpPost]
         public IActionResult Post( string uid, double lon, double lat, string content )
@@ -91,7 +91,7 @@ namespace GStore.API.Controllers
             var repository = UnitOfWork.Repository<GeoData>();
 
             var result = repository.Insert( new GeoData {
-                Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates> (new GeoJson2DGeographicCoordinates( lon, lat) ),
+                Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon, lat) ),
                 Content = content,
                 ContentType = Util.ContentType.Text,
                 UserId = ObjectId.Parse( uid )
