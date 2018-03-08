@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GStore.API.Models;
 using GStore.Core;
 using GStore.Core.Data;
 using GStore.Core.Domain;
@@ -30,18 +31,60 @@ namespace GStore.API.Controllers
 
             var repository = UnitOfWork.Repository<GeoData>();
 
-            var result = repository.GetById( ObjectId.Parse( id ) );
+            var geodata = repository.GetById( ObjectId.Parse( id ) );
 
-            if( result == null )
+            if( geodata == null )
             {
                 return NotFound( id );
             }
 
-            return Ok( result.Content );
+            return Ok( new GeoResult {
+                Id = geodata.Id.ToString(),
+                Longitude = geodata.Location.Coordinates.Longitude,
+                Latitude = geodata.Location.Coordinates.Latitude,
+                Content = geodata.Content,
+                ContentType = geodata.ContentType
+            } );
+        }
+
+        [HttpGet]
+        [Route( "content" )]
+        public ObjectResult GetContent( string id )
+        {
+            Logger.LogDebug( "GET-CONTENT[GeoData]" );
+
+            var repository = UnitOfWork.Repository<GeoData>();
+
+            var geodata = repository.GetById( ObjectId.Parse( id ) );
+
+            if( geodata == null )
+            {
+                return NotFound( id );
+            }
+
+            return Ok( geodata.Content );
+        }
+
+        [HttpGet]
+        [Route( "location" )]
+        public ObjectResult GetByLocation( double lon, double lat )
+        {
+            Logger.LogDebug( "GET-LOCATION[GeoData]" );
+
+            var repository = UnitOfWork.Repository<GeoData>();
+
+            var geoData = repository.GetById( ObjectId.Parse( id ) );
+
+            if( geoData == null )
+            {
+                return NotFound( new { lon, lat } );
+            }
+
+            //return Ok( geoData.Content );
         }
 
         [HttpPost]
-        public IActionResult Post( string uid, double lat, double lon, string content )
+        public IActionResult Post( string uid, double lon, double lat, string content )
         {
             Logger.LogDebug( "POST[GeoData]" );
 
