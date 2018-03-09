@@ -17,11 +17,11 @@ using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace GStore.API.Controllers
 {
-    [Route( "api/geodata" )]
+    [ApiVersion( "1.0" )]
+    [Route( "api/v{version:apiVersion}/geodata" )]
     public class GeoDataController : BaseController
     {
-        public GeoDataController( IConfiguration config, ILogger<GeoDataController> logger, UnitOfWork unitOfWork ) : base( config, logger, unitOfWork )
-        { }
+        public GeoDataController( IConfiguration config, ILogger<GeoDataController> logger, UnitOfWork unitOfWork ) : base( config, logger, unitOfWork ) { }
 
         [HttpGet]
         public ObjectResult Get( string id )

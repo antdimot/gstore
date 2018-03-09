@@ -25,6 +25,7 @@ namespace GStore.API
         public void ConfigureServices( IServiceCollection services )
         {
             services.AddMvc();
+            services.AddApiVersioning();
 
             services.AddScoped<DataContext>();
             services.AddScoped<UnitOfWork>();

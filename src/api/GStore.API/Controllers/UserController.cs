@@ -12,16 +12,15 @@ using GStore.API.Models;
 
 namespace GStore.API.Controllers
 {
-    [Produces("application/json")]
-    [Route( "api/user" )]
+    //[Produces("application/json")]
+    [ApiVersion( "1.0" )]
+    [Route( "api/v{version:apiVersion}/user" )]
     public class UserController : BaseController
     {
-        public UserController( IConfiguration config, ILogger<UserController> logger, UnitOfWork unitOfWork ) : base( config, logger, unitOfWork )
-        {
-        }
+        public UserController( IConfiguration config, ILogger<UserController> logger, UnitOfWork unitOfWork ) : base( config, logger, unitOfWork ) { }
 
         [HttpGet]
-        public IEnumerable<UserResult> Get()
+        public ObjectResult Get()
         {
             var repository = UnitOfWork.Repository<User>();
 
@@ -38,7 +37,7 @@ namespace GStore.API.Controllers
 
             Logger.LogDebug( "GET[User]" );
 
-            return result;
+            return Ok( result );
         }
     }
 }
