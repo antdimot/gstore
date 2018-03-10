@@ -48,12 +48,10 @@ namespace GStore.API
                 var now = DateTime.UtcNow;
                 var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey( System.Text.Encoding.Default.GetBytes( sec ) );
 
-
-                SecurityToken securityToken;
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                 TokenValidationParameters validationParameters = new TokenValidationParameters() {
-                    ValidAudience = "http://localhost:50191",
-                    ValidIssuer = "http://localhost:50191",
+                    ValidAudience = "http://localhost:50416",
+                    ValidIssuer = "http://localhost:50416",
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     LifetimeValidator = this.LifetimeValidator,
@@ -61,7 +59,7 @@ namespace GStore.API
                 };
 
                 //extract and assign the user of the jwt
-                Thread.CurrentPrincipal = handler.ValidateToken( token, validationParameters, out securityToken );
+                Thread.CurrentPrincipal = handler.ValidateToken( token, validationParameters, out SecurityToken securityToken );
                 //HttpContext.Current.User = handler.ValidateToken( token, validationParameters, out securityToken );
 
                 return base.SendAsync( request, cancellationToken );

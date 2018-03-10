@@ -21,18 +21,18 @@ namespace GStore.API.Controllers
     {
         public UserController( IConfiguration config, ILogger<UserController> logger, UnitOfWork unitOfWork ) : base( config, logger, unitOfWork ) { }
 
-        [HttpGet]
-        public ObjectResult Get()
-        {
-            Logger.LogDebug( "GET[User]" );
+        //[HttpGet]
+        //public ObjectResult Get()
+        //{
+        //    Logger.LogDebug( "GET[User]" );
 
-            var repository = UnitOfWork.Repository<User>();
+        //    var repository = UnitOfWork.Repository<User>();
 
-            var users = repository.GetList( u => !u.Deleted )
-                                  .Select( u => UserResult.Create( u ) );
+        //    var users = repository.GetList( u => !u.Deleted )
+        //                          .Select( u => UserResult.Create( u ) );
 
-            return Ok( users );
-        }
+        //    return Ok( users );
+        //}
 
         [HttpGet]
         public ObjectResult Get( string id  )
