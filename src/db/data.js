@@ -12,7 +12,8 @@ var addUsers = ()=> {
         "pword": password,
         "email": "antonio.dimotta@gmail.com",
         "fname": "Antonio",
-        "lname": "Di Motta"
+        "lname": "Di Motta",
+        "enabled": "true"
     } ] )
 };
 addUsers();
