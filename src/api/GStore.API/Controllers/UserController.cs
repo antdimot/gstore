@@ -75,6 +75,9 @@ namespace GStore.API.Controllers
 
         private string GenerateToken( User user, DateTime expires )
         {
+            var appSecretKey = Config.GetSection( "GStore" ).GetValue<string>( "appkey" );
+            var signCredentials = new SigningCredentials( TokenAuthOption.CreateSecurityKey( appSecretKey ), Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature );
+
             var handler = new JwtSecurityTokenHandler();
 
             var identity = new ClaimsIdentity(
@@ -85,7 +88,7 @@ namespace GStore.API.Controllers
             var securityToken = handler.CreateToken( new SecurityTokenDescriptor {
                 Issuer = TokenAuthOption.Issuer,
                 Audience = TokenAuthOption.Audience,
-                SigningCredentials = TokenAuthOption.SigningCredentials,
+                SigningCredentials = signCredentials,
                 Subject = identity,
                 Expires = expires
             } );

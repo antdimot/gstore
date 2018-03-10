@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GStore.API.Comon
@@ -10,10 +11,16 @@ namespace GStore.API.Comon
     {
         public static string Audience { get; } = "GStoreAudience";
         public static string Issuer { get; } = "GStoreIssuer";
-        public static RsaSecurityKey Key { get; } = new RsaSecurityKey( RSAKeyHelper.GenerateKey() );
-        public static SigningCredentials SigningCredentials { get; } = new SigningCredentials( Key, SecurityAlgorithms.RsaSha256Signature );
+
+        //public static RsaSecurityKey Key { get; } = new RsaSecurityKey( RSAKeyHelper.GenerateKey() );
+        //public static SigningCredentials SigningCredentials { get; } = new SigningCredentials( Key, SecurityAlgorithms.RsaSha256Signature );
 
         public static TimeSpan ExpiresSpan { get; } = TimeSpan.FromMinutes( 40 );
         public static string TokenType { get; } = "Bearer";
+
+        public static SymmetricSecurityKey CreateSecurityKey( string appKey )
+        {
+            return new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey( System.Text.Encoding.Default.GetBytes( appKey ) );
+        }
     }
 }

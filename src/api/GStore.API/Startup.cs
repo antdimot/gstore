@@ -31,6 +31,8 @@ namespace GStore.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices( IServiceCollection services )
         {
+            var appSecretKey = Configuration.GetSection( "GStore" ).GetValue<string>( "appkey" );
+
             services.AddAuthentication( options => {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -38,7 +40,7 @@ namespace GStore.API
             .AddJwtBearer( options => {
                 options.Audience = TokenAuthOption.Audience;
                 options.TokenValidationParameters = new TokenValidationParameters() {
-                    IssuerSigningKey = TokenAuthOption.Key,
+                    IssuerSigningKey = TokenAuthOption.CreateSecurityKey( appSecretKey ) ,
                     ValidAudience = TokenAuthOption.Audience,
                     ValidIssuer = TokenAuthOption.Issuer,
                     // When receiving a token, check that we've signed it.
