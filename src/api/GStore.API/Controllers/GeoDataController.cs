@@ -96,16 +96,21 @@ namespace GStore.API.Controllers
         {
             Logger.LogDebug( "POST[GeoData]" );
 
-            var repository = UnitOfWork.Repository<GeoData>();
+            if( ObjectId.TryParse( uid, out ObjectId oid ) )
+            {
+                var repository = UnitOfWork.Repository<GeoData>();
 
-            var result = repository.Insert( new GeoData {
-                Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon, lat) ),
-                Content = content,
-                ContentType = Util.ContentType.Text,
-                UserId = ObjectId.Parse( uid )
-            } );
+                var result = repository.Insert( new GeoData {
+                    Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon, lat ) ),
+                    Content = content,
+                    ContentType = Util.ContentType.Text,
+                    UserId = ObjectId.Parse( uid )
+                } );
 
-            return Ok();
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }
