@@ -8,6 +8,7 @@ using GStore.API.Models;
 using GStore.Core;
 using GStore.Core.Data;
 using GStore.Core.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -19,51 +20,54 @@ namespace GStore.API.Controllers
 {
     [ApiVersion( "1.0" )]
     [Route( "api/v{version:apiVersion}/geodata" )]
+    [Authorize]
     public class GeoDataController : BaseController
     {
         public GeoDataController( IConfiguration config, ILogger<GeoDataController> logger, UnitOfWork unitOfWork ) : base( config, logger, unitOfWork ) { }
 
-        [HttpGet]
-        public ObjectResult Get( string id )
+        [HttpGet( "{id}" )]
+        public IActionResult Get( string id )
         {
             Logger.LogDebug( "GET[GeoData]" );
 
-            var repository = UnitOfWork.Repository<GeoData>();
-
-            var item = repository.GetById( ObjectId.Parse( id ) );
-            if( item == null )
+            if( ObjectId.TryParse( id, out ObjectId oid ) )
             {
-                return NotFound( id );
+                var item = UnitOfWork.Repository<GeoData>()
+                                     .GetById( oid );
+
+                if( item == null ) return NotFound( id );
+
+                return Ok( new GeoResult {
+                    Id = item.Id.ToString(),
+                    Longitude = item.Location.Coordinates.Longitude,
+                    Latitude = item.Location.Coordinates.Latitude,
+                    Content = item.Content,
+                    ContentType = item.ContentType
+                } );
             }
 
-            return Ok( new GeoResult {
-                Id = item.Id.ToString(),
-                Longitude = item.Location.Coordinates.Longitude,
-                Latitude = item.Location.Coordinates.Latitude,
-                Content = item.Content,
-                ContentType = item.ContentType
-            } );
+            return BadRequest();
         }
 
-        [HttpGet]
-        [Route( "content" )]
-        public ObjectResult GetContent( string id )
+        [HttpGet( "content/{id}" )]
+        public IActionResult GetContent( string id )
         {
             Logger.LogDebug( "GET-CONTENT[GeoData]" );
 
-            var repository = UnitOfWork.Repository<GeoData>();
-
-            var item = repository.GetById( ObjectId.Parse( id ) );
-            if( item == null )
+            if( ObjectId.TryParse( id, out ObjectId oid ) )
             {
-                return NotFound( id );
+                var item = UnitOfWork.Repository<GeoData>()
+                                     .GetById( oid );
+
+                if( item == null ) return NotFound( id );
+
+                return Ok( item.Content );
             }
 
-            return Ok( item.Content );
+            return BadRequest();
         }
 
-        [HttpGet]
-        [Route( "location" )]
+        [HttpGet( "location" )]
         public ObjectResult GetByLocation( double lon, double lat, double distance )
         {
             Logger.LogDebug( "GET-LOCATION[GeoData]" );

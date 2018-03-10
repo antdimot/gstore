@@ -21,34 +21,39 @@ namespace GStore.API.Controllers
     {
         public UserController( IConfiguration config, ILogger<UserController> logger, UnitOfWork unitOfWork ) : base( config, logger, unitOfWork ) { }
 
-        //[HttpGet]
-        //public ObjectResult Get()
-        //{
-        //    Logger.LogDebug( "GET[User]" );
-
-        //    var repository = UnitOfWork.Repository<User>();
-
-        //    var users = repository.GetList( u => !u.Deleted )
-        //                          .Select( u => UserResult.Create( u ) );
-
-        //    return Ok( users );
-        //}
-
         [HttpGet]
-        public ObjectResult Get( string id  )
+        public ObjectResult Get()
         {
             Logger.LogDebug( "GET[User]" );
 
             var repository = UnitOfWork.Repository<User>();
 
-            var user = repository.GetById( ObjectId.Parse( id ) );
+            var users = repository.GetList( u => !u.Deleted )
+                                  .Select( u => UserResult.Create( u ) );
 
-            if( user == null ) return new NotFoundObjectResult( id );
-
-            return Ok( UserResult.Create( user ) );
+            return Ok( users );
         }
 
-        [HttpPost]
+        [HttpGet( "{id}" )]
+        public IActionResult Get( string id )
+        {
+            Logger.LogDebug( "GET[User]" );
+
+            if( ObjectId.TryParse( id, out ObjectId oid ) )
+            {
+                var repository = UnitOfWork.Repository<User>();
+
+                var user = repository.GetById( oid );
+
+                if( user == null ) return new NotFoundObjectResult( oid );
+
+                return Ok( UserResult.Create( user ) );
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost( "authenticate" )]
         public IActionResult Authenticate( string username, string password )
         {
             var repository = UnitOfWork.Repository<User>();
@@ -57,14 +62,9 @@ namespace GStore.API.Controllers
                                                     u.Password == password &&
                                                     !u.Deleted );
 
-            if( user != null )
-            {
-                return Ok( new { accesstoken = createToken( username ) } );
-            }
-            else
-            {
-                return Forbid();
-            }
+            if( user == null ) return Forbid();
+
+            return Ok( new { accesstoken = createToken( username ) } );
         }
 
         private string createToken( string username )

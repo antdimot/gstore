@@ -1,7 +1,8 @@
 var db = db.getSiblingDB("demo");
 var password = "P@ssw0rd";
 
-var user1Id = ObjectId();
+var user1Id = ObjectId("5aa3a6c360d53c0e5565f3a9");
+var user2Id = ObjectId("5aa3a6c360d53c0e5565f3aa");
 var addUsers = ()=> {
     db.user.drop();
     db.user.createIndex({'uname':1});
@@ -14,7 +15,17 @@ var addUsers = ()=> {
         "fname": "Antonio",
         "lname": "Di Motta",
         "enabled": "true"
-    } ] )
+    },
+    {
+        "_id": user2Id,
+        "uname": "pippo",
+        "pword": password,
+        "email": "pippo@mail.com",
+        "fname": "Pippo",
+        "lname": "Pluto",
+        "enabled": "true"
+    }
+ ] )
 };
 addUsers();
 

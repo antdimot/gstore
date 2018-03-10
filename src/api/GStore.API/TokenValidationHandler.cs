@@ -64,11 +64,11 @@ namespace GStore.API
 
                 return base.SendAsync( request, cancellationToken );
             }
-            catch( SecurityTokenValidationException )
+            catch( SecurityTokenValidationException ex1 )
             {
                 statusCode = HttpStatusCode.Unauthorized;
             }
-            catch( Exception )
+            catch( Exception ex2  )
             {
                 statusCode = HttpStatusCode.InternalServerError;
             }
