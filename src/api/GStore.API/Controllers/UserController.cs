@@ -73,9 +73,9 @@ namespace GStore.API.Controllers
             var requestAt = DateTime.Now;
             var expiresIn = requestAt + TokenAuthOption.ExpiresSpan;
 
-            var util = new Utils( Config );
+            var tokenSrv = new TokenService( Config );
 
-            return Ok( new { accesstoken = util.GenerateToken( user, expiresIn ) } );
+            return Ok( new { accesstoken = tokenSrv.GenerateToken( user, expiresIn ) } );
         }  
     }
 }

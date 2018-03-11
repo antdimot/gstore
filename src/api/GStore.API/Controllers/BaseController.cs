@@ -24,10 +24,5 @@ namespace GStore.API.Controllers
             Logger = logger;
             Config = config;
         }
-
-        protected Utils Utils
-        {
-            get { return new Utils( Config );  }
-        }
     }
 }

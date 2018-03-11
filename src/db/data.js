@@ -14,7 +14,8 @@ var addUsers = ()=> {
         "email": "antonio.dimotta@gmail.com",
         "fname": "Antonio",
         "lname": "Di Motta",
-        "enabled": "true"
+        "enabl": "true",
+        "roles": ["admin","reader","writer"]
     },
     {
         "_id": user2Id,
@@ -23,7 +24,8 @@ var addUsers = ()=> {
         "email": "pippo@mail.com",
         "fname": "Pippo",
         "lname": "Pluto",
-        "enabled": "true"
+        "enabl": "true",
+        "roles": ["reader","writer"]
     }
  ] )
 };

@@ -15,7 +15,7 @@ namespace GStore.Core.Domain
         [BsonElement( "del" )]
         public bool Deleted { get; set; } = false;
 
-        [BsonElement( "enabled" )]
+        [BsonElement( "enabl" )]
         public bool Enabled { get; set; }
 
         [BsonElement( "fname" )]
@@ -32,5 +32,8 @@ namespace GStore.Core.Domain
 
         [BsonElement( "email" )]
         public string Email { get; set; }
+
+        [BsonElement( "roles" )]
+        public string[] Roles { get; set; }
     }
 }

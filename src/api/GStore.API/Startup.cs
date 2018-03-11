@@ -39,7 +39,7 @@ namespace GStore.API
             } )
             .AddJwtBearer( options => {
                 options.Audience = TokenAuthOption.Audience;
-                options.TokenValidationParameters = new Utils( Configuration ).CreateValidationParams();
+                options.TokenValidationParameters = new TokenService( Configuration ).CreateValidationParams();
             } );
 
             services.AddMvc();

@@ -98,11 +98,17 @@ namespace GStore.API.Controllers
         {
             Logger.LogDebug( "POST[GeoData]" );
 
-            if( Utils.ReadToken( Request, out ClaimsPrincipal principal ) )
+            var tokenSrv = new TokenService( Config );
+
+            if( tokenSrv.ReadToken( Request, out ClaimsPrincipal principal ) )
             {
-                string uid = principal.Claims.Where( c => c.Type == "ID" )
+                string uid = principal.Claims.Where( c => c.Type == "UserId" )
                                              .Select( c => c.Value )
-                                             .FirstOrDefault() ;
+                                             .FirstOrDefault();
+
+                //string roles = principal.Claims.Where( c => c.Type == "UserRoles" )
+                //                                 .Select( c => c.Value )
+                //                                 .FirstOrDefault();
 
                 if( ObjectId.TryParse( uid, out ObjectId oid ) )
                 {
