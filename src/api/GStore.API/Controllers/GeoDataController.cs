@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using GStore.API.Comon;
 using GStore.API.Models;
 using GStore.Core;
 using GStore.Core.Data;
@@ -92,22 +94,29 @@ namespace GStore.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post( string uid, double lon, double lat, string content )
+        public IActionResult Post( double lon, double lat, string content )
         {
             Logger.LogDebug( "POST[GeoData]" );
 
-            if( ObjectId.TryParse( uid, out ObjectId oid ) )
+            if( Utils.ReadToken( Request, out ClaimsPrincipal principal ) )
             {
-                var repository = UnitOfWork.Repository<GeoData>();
+                string uid = principal.Claims.Where( c => c.Type == "ID" )
+                                             .Select( c => c.Value )
+                                             .FirstOrDefault() ;
 
-                var result = repository.Insert( new GeoData {
-                    Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon, lat ) ),
-                    Content = content,
-                    ContentType = Util.ContentType.Text,
-                    UserId = ObjectId.Parse( uid )
-                } );
+                if( ObjectId.TryParse( uid, out ObjectId oid ) )
+                {
+                    var repository = UnitOfWork.Repository<GeoData>();
 
-                return Ok();
+                    var result = repository.Insert( new GeoData {
+                        Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon, lat ) ),
+                        Content = content,
+                        ContentType = Utils.ContentType.Text,
+                        UserId = ObjectId.Parse( uid )
+                    } );
+
+                    return Ok();
+                }
             }
 
             return BadRequest();

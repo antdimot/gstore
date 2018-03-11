@@ -1,4 +1,5 @@
-﻿using GStore.Core.Data;
+﻿using GStore.API.Comon;
+using GStore.Core.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -22,6 +23,11 @@ namespace GStore.API.Controllers
             UnitOfWork = unitOfWork;
             Logger = logger;
             Config = config;
+        }
+
+        protected Utils Utils
+        {
+            get { return new Utils( Config );  }
         }
     }
 }

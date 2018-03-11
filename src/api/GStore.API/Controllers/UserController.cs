@@ -15,6 +15,7 @@ using MongoDB.Bson;
 using System.Security.Principal;
 using GStore.API.Comon;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GStore.API.Controllers
 {
@@ -24,6 +25,7 @@ namespace GStore.API.Controllers
     {
         public UserController( IConfiguration config, ILogger<UserController> logger, UnitOfWork unitOfWork ) : base( config, logger, unitOfWork ) { }
 
+        [Authorize]
         [HttpGet]
         public ObjectResult Get()
         {
@@ -37,6 +39,7 @@ namespace GStore.API.Controllers
             return Ok( users );
         }
 
+        [Authorize]
         [HttpGet( "{id}" )]
         public IActionResult Get( string id )
         {
@@ -70,30 +73,9 @@ namespace GStore.API.Controllers
             var requestAt = DateTime.Now;
             var expiresIn = requestAt + TokenAuthOption.ExpiresSpan;
 
-            return Ok( new { accesstoken = GenerateToken( user, expiresIn ) } );
-        }
+            var util = new Utils( Config );
 
-        private string GenerateToken( User user, DateTime expires )
-        {
-            var appSecretKey = Config.GetSection( "GStore" ).GetValue<string>( "appkey" );
-            var signCredentials = new SigningCredentials( TokenAuthOption.CreateSecurityKey( appSecretKey ), Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature );
-
-            var handler = new JwtSecurityTokenHandler();
-
-            var identity = new ClaimsIdentity(
-                new GenericIdentity( user.Username, "TokenAuth" ),
-                new[] { new Claim( "ID", user.Id.ToString() ) }
-            );
-
-            var securityToken = handler.CreateToken( new SecurityTokenDescriptor {
-                Issuer = TokenAuthOption.Issuer,
-                Audience = TokenAuthOption.Audience,
-                SigningCredentials = signCredentials,
-                Subject = identity,
-                Expires = expires
-            } );
-
-            return handler.WriteToken( securityToken );
-        }
+            return Ok( new { accesstoken = util.GenerateToken( user, expiresIn ) } );
+        }  
     }
 }
