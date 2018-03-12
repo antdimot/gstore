@@ -48,6 +48,7 @@ var addData = ()=> {
         "content": "Mate naples site 2",
         "name": "Mate2",
         "ctype": "text/plain",
+        "tags": ["company"],
         "uid" : user1Id
     },
     {
@@ -59,6 +60,7 @@ var addData = ()=> {
         "content": "Hotel Ramada",
         "name": "Hotel",
         "ctype": "text/plain",
+        "tags": ["hotel"],
         "uid" : user1Id
     },
     {
@@ -70,6 +72,7 @@ var addData = ()=> {
         "content": "Naples train station",
         "name": "Station",
         "ctype": "text/plain",
+        "tags": ["city"],
         "uid" : user1Id
     },
     {
@@ -81,6 +84,7 @@ var addData = ()=> {
         "content": "Mate naples site 1",
         "name": "Mate1",
         "ctype": "text/plain",
+        "tags": ["company"],
         "uid" : user1Id
     },
  ] )

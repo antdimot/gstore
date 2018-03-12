@@ -39,13 +39,7 @@ namespace GStore.API.Controllers
 
                 if( item == null ) return NotFound( id );
 
-                return Ok( new GeoResult {
-                    Id = item.Id.ToString(),
-                    Longitude = item.Location.Coordinates.Longitude,
-                    Latitude = item.Location.Coordinates.Latitude,
-                    Content = item.Content,
-                    ContentType = item.ContentType
-                } );
+                return Ok( GeoResult.Create( item ) );
             }
 
             return BadRequest();
@@ -82,13 +76,7 @@ namespace GStore.API.Controllers
                 return NotFound( new { lon, lat, distance } );
             }
 
-            var result = items.Select( obj => new GeoResult {
-                Id = obj.Id.ToString(),
-                Longitude = obj.Location.Coordinates.Longitude,
-                Latitude = obj.Location.Coordinates.Latitude,
-                Content = obj.Content,
-                ContentType = obj.ContentType
-            } );
+            var result = items.Select( obj => GeoResult.Create( obj ) );
 
             return Ok( result );
         }

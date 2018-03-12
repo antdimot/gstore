@@ -33,5 +33,8 @@ namespace GStore.Core.Domain
 
         [BsonElement("uid")]
         public ObjectId UserId { get; set; }
+
+        [BsonElement( "tags" )]
+        public string[] Tags { get; set; }
     }
 }
