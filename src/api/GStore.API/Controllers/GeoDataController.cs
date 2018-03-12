@@ -29,14 +29,14 @@ namespace GStore.API.Controllers
             base( config, logger, context ) { }
 
         [HttpGet( "{id}" )]
-        public IActionResult Get( string id )
+        public async Task<IActionResult> Get( string id )
         {
             Logger.LogDebug( "GET[GeoData]" );
 
             if( ObjectId.TryParse( id, out ObjectId oid ) )
             {
-                var item = UnitOfWork.Repository<GeoData>()
-                                     .GetById( oid );
+                var item = await UnitOfWork.Repository<GeoData>()
+                                           .GetByIdAsync( oid );
 
                 if( item == null ) return NotFound( id );
 
@@ -47,14 +47,14 @@ namespace GStore.API.Controllers
         }
 
         [HttpGet( "content/{id}" )]
-        public IActionResult GetContent( string id )
+        public async Task<IActionResult> GetContent( string id )
         {
             Logger.LogDebug( "GET-CONTENT[GeoData]" );
 
             if( ObjectId.TryParse( id, out ObjectId oid ) )
             {
-                var item = UnitOfWork.Repository<GeoData>()
-                                     .GetById( oid );
+                var item = await UnitOfWork.Repository<GeoData>()
+                                           .GetByIdAsync( oid );
 
                 if( item == null ) return NotFound( id );
 
@@ -65,13 +65,13 @@ namespace GStore.API.Controllers
         }
 
         [HttpGet( "location" )]
-        public ObjectResult GetByLocation( double lon, double lat, double distance, string[] tags = null )
+        public async Task<ObjectResult> GetByLocation( double lon, double lat, double distance, string[] tags = null )
         {
             Logger.LogDebug( "GET-LOCATION[GeoData]" );
 
             var repository = UnitOfWork.GeoRepository<GeoData>();
 
-            var items = repository.GetByLocation( lon, lat, distance );
+            var items = await repository.GetByLocationAsync( lon, lat, distance );
             if( items.Count == 0 )
             {
                 return NotFound( new { lon, lat, distance } );
@@ -83,7 +83,7 @@ namespace GStore.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post( double lon, double lat, string content )
+        public async Task<IActionResult> Post( double lon, double lat, string content )
         {
             Logger.LogDebug( "POST[GeoData]" );
 
@@ -99,11 +99,11 @@ namespace GStore.API.Controllers
                 {
                     var repository = UnitOfWork.Repository<GeoData>();
 
-                    var result = repository.Insert( new GeoData {
-                        Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon, lat ) ),
-                        Content = content,
-                        ContentType = Utils.ContentType.Text,
-                        UserId = ObjectId.Parse( uid )
+                    var result = await repository.InsertAsync( new GeoData {
+                                            Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon, lat ) ),
+                                            Content = content,
+                                            ContentType = Utils.ContentType.Text,
+                                            UserId = ObjectId.Parse( uid )
                     } );
 
                     return Ok();

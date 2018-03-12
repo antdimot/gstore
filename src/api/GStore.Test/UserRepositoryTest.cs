@@ -33,9 +33,9 @@ namespace GStore.Test
         {  
             var work = new UnitOfWork ( _context );
 
-            var result = work.Repository<User>().GetList();
+            var result = work.Repository<User>().GetListAsync();
 
-            Assert.IsTrue( result.Count > 0, "no data found" );
+            Assert.IsTrue( result.Result.Count > 0, "no data found" );
         }
 
         [TestMethod]
@@ -43,9 +43,9 @@ namespace GStore.Test
         {
             var work = new UnitOfWork( _context );
 
-            var result = work.Repository<User>().GetSingle( u => u.Firstname == "Antonio" );
+            var result = work.Repository<User>().GetSingleAsync( u => u.Firstname == "Antonio" );
 
-            Assert.IsNotNull( result, "no data found" );
+            Assert.IsNotNull( result.Result, "no data found" );
         }
 
         [TestMethod]

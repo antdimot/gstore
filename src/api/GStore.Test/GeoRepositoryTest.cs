@@ -33,9 +33,9 @@ namespace GStore.Test
         {
             var work = new UnitOfWork( _context );
 
-            var result = work.GeoRepository<GeoData>().GetByLocation( 14.271879, 40.852815, 1.05 );
+            var result = work.GeoRepository<GeoData>().GetByLocationAsync( 14.271879, 40.852815, 1.05 );
 
-            Assert.IsTrue( result.Count == 2, "distance is not correct" );
+            Assert.IsTrue( result.Result.Count == 2, "distance is not correct" );
         }
     }
 }

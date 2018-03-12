@@ -28,22 +28,23 @@ namespace GStore.API.Controllers
 
         [Authorize( Policy = "AdminApi" )]
         [HttpGet]
-        public ObjectResult Get()
+        public async Task<ObjectResult> Get()
         {
             Logger.LogDebug( "GET[User]" );
 
             var repository = UnitOfWork.Repository<User>();
 
-            var users = repository.GetList( u => !u.Deleted )
-                                  .Select( u => UserResult.Create( u ) );
+            var users = await repository.GetListAsync( u => !u.Deleted );
 
-            return Ok( users );
+            var result = users.Select( u => UserResult.Create( u ) );
+
+            return Ok( result );
         }
 
         [Authorize( Policy = "AdminApi" )]
         [Authorize]
         [HttpGet( "{id}" )]
-        public IActionResult Get( string id )
+        public async Task<IActionResult> Get( string id )
         {
             Logger.LogDebug( "GET[User]" );
 
@@ -51,7 +52,7 @@ namespace GStore.API.Controllers
             {
                 var repository = UnitOfWork.Repository<User>();
 
-                var user = repository.GetById( oid );
+                var user = await repository.GetByIdAsync( oid );
 
                 if( user == null ) return new NotFoundObjectResult( oid );
 
@@ -62,13 +63,13 @@ namespace GStore.API.Controllers
         }
 
         [HttpPost( "authenticate" )]
-        public IActionResult Authenticate( string username, string password )
+        public async Task<IActionResult> Authenticate( string username, string password )
         {
             var repository = UnitOfWork.Repository<User>();
 
-            var user = repository.GetSingle( u =>   u.Username == username &&
-                                                    u.Password == password &&
-                                                    !u.Deleted );
+            var user = await repository.GetSingleAsync( u =>    u.Username == username &&
+                                                                u.Password == password &&
+                                                                !u.Deleted );
 
             if( user == null ) return Forbid();
 

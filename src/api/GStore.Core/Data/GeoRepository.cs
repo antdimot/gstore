@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GStore.Core.Data
 {
@@ -13,22 +14,22 @@ namespace GStore.Core.Data
         {
         }
 
-        public IReadOnlyList<T> GetByLocation( double longitude, double latitude, double distance )
+        public async Task<IReadOnlyList<T>> GetByLocationAsync( double longitude, double latitude, double distance )
         {
             _context.Logger.LogDebug( "REPOSITORY - GetByLocation" );
 
             try
             {
-                var radius = distance / 6378.1; // calc radius
+                var radius = distance / 6378.1; // calc radius by km
 
                 var filterBuilder = new FilterDefinitionBuilder<T>();
 
                 var filter = filterBuilder.GeoWithinCenterSphere(
-                                o => o.Location,
-                                longitude, latitude, radius );
+                                            o => o.Location,
+                                            longitude, latitude, radius );
 
-                var query = _context.Database.GetCollection<T>( _collectionName )
-                                             .Find<T>( filter );
+                var query = await _context.Database.GetCollection<T>( _collectionName )
+                                                   .FindAsync<T>( filter );
 
                 return query.ToList();
             }

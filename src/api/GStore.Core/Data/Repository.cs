@@ -29,13 +29,13 @@ namespace GStore.Core.Data
         }
 
         #region WRITE METHODS
-        public T Insert( T instance )
+        public async Task<T> InsertAsync( T instance )
         {
             try
             {
                 instance.Id = ObjectId.GenerateNewId();
 
-                _collection.InsertOne( instance );
+                await _collection.InsertOneAsync( instance );
 
                 return instance;
             }
@@ -47,7 +47,7 @@ namespace GStore.Core.Data
             }
         }
 
-        public void Update( T instance )
+        public async void Update( T instance )
         {
             try
             {
@@ -55,7 +55,7 @@ namespace GStore.Core.Data
 
                 var update = new ObjectUpdateDefinition<T>( instance );
 
-                _collection.UpdateOne<T>( filter, update );
+                await _collection.UpdateOneAsync<T>( filter, update );
             }
             catch( Exception ex )
             {
@@ -65,7 +65,7 @@ namespace GStore.Core.Data
             }
         }
 
-        public void Delete( ObjectId id, bool logical = true )
+        public async void Delete( ObjectId id, bool logical = true )
         {
             try
             {
@@ -75,7 +75,7 @@ namespace GStore.Core.Data
                 {
                     var update = new JsonUpdateDefinition<T>( "deleted:'false'" );
 
-                    _collection.UpdateOne<T>( filter, update );
+                    await _collection.UpdateOneAsync<T>( filter, update );
                 }
                 else
                 {
@@ -97,13 +97,13 @@ namespace GStore.Core.Data
         #endregion
 
         #region QUERY METHODS
-        public T GetSingle( Expression<Func<T, bool>> condition )
+        public async Task<T> GetSingleAsync( Expression<Func<T, bool>> condition )
         {
             _context.Logger.LogDebug( "REPOSITORY - GetSingle" );
 
             try
             {
-                var query = _collection.Find<T>( condition );
+                var query = await _collection.FindAsync<T>( condition );
 
                 var result =  query.SingleOrDefault();
 
@@ -117,34 +117,29 @@ namespace GStore.Core.Data
             }
         }
 
-        public T GetById( ObjectId id )
+        public async Task<T> GetByIdAsync( ObjectId id )
         {
-            return this.GetSingle( o => o.Id == id );
+            return await GetSingleAsync( o => o.Id == id );
         }
 
-        public IReadOnlyList<T> GetList( Expression<Func<T, bool>> condition = null, Expression<Func<T, object>> order = null )
+        public async Task<List<T>> GetListAsync( Expression<Func<T, bool>> condition = null )
         {
             _context.Logger.LogDebug( "REPOSITORY - GetList" );
 
             try
             {
-                IFindFluent<T, T> query;
+                IAsyncCursor<T> query;
 
                 if( condition != null )
                 {
-                    query = _collection.Find<T>( condition );
+                    query = await _collection.FindAsync<T>( condition );
                 }
                 else
                 {
-                    query = _collection.Find<T>( _ => true );
+                    query = await _collection.FindAsync<T>( _ => true );
                 }
 
-                if( order != null )
-                {
-                    return query.SortBy<T, T>( order ).ToList();
-                }
-
-                return query.ToList();
+                return await query.ToListAsync();
             }
             catch( Exception ex )
             {
