@@ -10,11 +10,9 @@ namespace GStore.Core.Data
 {
     public class GeoRepository<T> : Repository<T> where T : ILocalizableEntity<ObjectId>
     {
-        public GeoRepository( DataContext context ) : base( context )
-        {
-        }
+        public GeoRepository( DataContext context ) : base( context ) { }
 
-        public async Task<IReadOnlyList<T>> GetByLocationAsync( double longitude, double latitude, double distance )
+        public async Task<IReadOnlyList<T>> GetByLocationAsync( double longitude, double latitude, double distance, string[] tags = null )
         {
             _context.Logger.LogDebug( "REPOSITORY - GetByLocation" );
 
@@ -22,14 +20,21 @@ namespace GStore.Core.Data
             {
                 var radius = distance / 6378.1; // calc radius by km
 
-                var filterBuilder = new FilterDefinitionBuilder<T>();
+                var filterBuilder = Builders<T>.Filter;
 
-                var filter = filterBuilder.GeoWithinCenterSphere(
-                                            o => o.Location,
-                                            longitude, latitude, radius );
+                var filters = new List<FilterDefinition<T>> {
+                        filterBuilder.GeoWithinCenterSphere(
+                                                o => o.Location,
+                                                longitude, latitude, radius )
+                };
+
+                if( tags != null && tags.Length > 0 )
+                {
+                    filters.Add( filterBuilder.AnyIn<string>( o => o.Tags, tags ) );
+                }
 
                 var query = await _context.Database.GetCollection<T>( _collectionName )
-                                                   .FindAsync<T>( filter );
+                                                   .FindAsync<T>( filterBuilder.And( filters ) );
 
                 return query.ToList();
             }

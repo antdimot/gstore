@@ -65,13 +65,13 @@ namespace GStore.API.Controllers
         }
 
         [HttpGet( "location" )]
-        public async Task<ObjectResult> GetByLocation( double lon, double lat, double distance, string[] tags = null )
+        public async Task<ObjectResult> GetByLocation( double lon, double lat, double distance, string[] tag = null )
         {
             Logger.LogDebug( "GET-LOCATION[GeoData]" );
 
             var repository = UnitOfWork.GeoRepository<GeoData>();
 
-            var items = await repository.GetByLocationAsync( lon, lat, distance );
+            var items = await repository.GetByLocationAsync( lon, lat, distance, tag );
             if( items.Count == 0 )
             {
                 return NotFound( new { lon, lat, distance } );
