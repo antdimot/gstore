@@ -65,7 +65,7 @@ namespace GStore.API.Controllers
         }
 
         [HttpGet( "location" )]
-        public ObjectResult GetByLocation( double lon, double lat, double distance )
+        public ObjectResult GetByLocation( double lon, double lat, double distance, string[] tags = null )
         {
             Logger.LogDebug( "GET-LOCATION[GeoData]" );
 

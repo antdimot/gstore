@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GStore.Core.Data
 {
@@ -153,7 +154,7 @@ namespace GStore.Core.Data
             }
         }
 
-        public long Count( Expression<Func<T, bool>> condition = null )
+        public async Task<long> CountAsync( Expression<Func<T, bool>> condition = null )
         {
             _context.Logger.LogDebug( "REPOSITORY - Count" );
 
@@ -161,7 +162,7 @@ namespace GStore.Core.Data
             {
                 if( condition == null ) return _collection.Count( _ => true );
 
-                return _collection.Count( condition );
+                return await _collection.CountAsync( condition );
             }
             catch( Exception ex )
             {
@@ -171,13 +172,13 @@ namespace GStore.Core.Data
             }
         }
 
-        public bool Exists( Expression<Func<T, bool>> condition )
+        public async Task<bool> ExistsAsync( Expression<Func<T, bool>> condition )
         {
             _context.Logger.LogDebug( "REPOSITORY - Exists" );
 
             try
             {
-                var result = this.Count( condition );
+                var result = await CountAsync( condition );
 
                 return result > 0;
             }
