@@ -23,12 +23,17 @@ namespace GStore.API.Controllers
     [Route( "api/v{version:apiVersion}/user" )]
     public class UserController : BaseController
     {
-        public UserController( IConfiguration config, ILogger<UserController> logger, UnitOfWork unitOfWork ) : base( config, logger, unitOfWork ) { }
+        public UserController( IConfiguration config, ILogger<UserController> logger, DataContext context ) :
+            base( config, logger, context ) { }
 
         [Authorize]
         [HttpGet]
         public ObjectResult Get()
         {
+            //string roles = principal.Claims.Where( c => c.Type == "UserRoles" )
+            //                                 .Select( c => c.Value )
+            //                                 .FirstOrDefault();
+
             Logger.LogDebug( "GET[User]" );
 
             var repository = UnitOfWork.Repository<User>();

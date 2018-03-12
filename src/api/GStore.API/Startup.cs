@@ -46,7 +46,7 @@ namespace GStore.API
             services.AddApiVersioning();
 
             services.AddScoped<DataContext>();
-            services.AddScoped<UnitOfWork>();
+            services.AddScoped<TokenService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

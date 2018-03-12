@@ -13,7 +13,8 @@ namespace GStore.API.Controllers
     [Route( "api/v{version:apiVersion}/[controller]" )]
     public class DefaultController : BaseController
     {
-        public DefaultController( IConfiguration config, ILogger<DefaultController> logger, UnitOfWork unitOfWork ) : base( config, logger, unitOfWork ) { }
+        public DefaultController( IConfiguration config, ILogger<DefaultController> logger, DataContext context ) :
+            base( config, logger, context ) { }
 
         [HttpGet]
         public IEnumerable<string> Get()

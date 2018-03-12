@@ -25,7 +25,8 @@ namespace GStore.API.Controllers
     [Authorize]
     public class GeoDataController : BaseController
     {
-        public GeoDataController( IConfiguration config, ILogger<GeoDataController> logger, UnitOfWork unitOfWork ) : base( config, logger, unitOfWork ) { }
+        public GeoDataController( IConfiguration config, ILogger<GeoDataController> logger, DataContext context ) :
+            base( config, logger, context ) { }
 
         [HttpGet( "{id}" )]
         public IActionResult Get( string id )
@@ -93,10 +94,6 @@ namespace GStore.API.Controllers
                 string uid = principal.Claims.Where( c => c.Type == "UserId" )
                                              .Select( c => c.Value )
                                              .FirstOrDefault();
-
-                //string roles = principal.Claims.Where( c => c.Type == "UserRoles" )
-                //                                 .Select( c => c.Value )
-                //                                 .FirstOrDefault();
 
                 if( ObjectId.TryParse( uid, out ObjectId oid ) )
                 {
