@@ -8,8 +8,6 @@ namespace GStore.API.Models
 {
     public class GeoResult
     {
-        public string Id { get; set; }
-
         public double Longitude { get; set; }
 
         public double Latitude { get; set; }
@@ -23,7 +21,6 @@ namespace GStore.API.Models
         public static GeoResult Create( GeoData data )
         {
             return new GeoResult {
-                Id = data.Id.ToString(),
                 Longitude = data.Location.Coordinates.Longitude,
                 Latitude = data.Location.Coordinates.Latitude,
                 Content = data.Content,

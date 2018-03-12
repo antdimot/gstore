@@ -28,6 +28,7 @@ namespace GStore.API.Controllers
         public GeoDataController( IConfiguration config, ILogger<GeoDataController> logger, DataContext context ) :
             base( config, logger, context ) { }
 
+        [Authorize( Policy = "AdminApi" )]
         [HttpGet( "{id}" )]
         public async Task<IActionResult> Get( string id )
         {
@@ -46,6 +47,7 @@ namespace GStore.API.Controllers
             return BadRequest();
         }
 
+        [Authorize( Policy = "AdminApi" )]
         [HttpGet( "content/{id}" )]
         public async Task<IActionResult> GetContent( string id )
         {
@@ -87,9 +89,7 @@ namespace GStore.API.Controllers
         {
             Logger.LogDebug( "POST[GeoData]" );
 
-            var tokenSrv = new TokenService( Config );
-
-            if( tokenSrv.ReadToken( Request, out ClaimsPrincipal principal ) )
+            if( TokenService.ReadToken( Request, out ClaimsPrincipal principal ) )
             {
                 string uid = principal.Claims.Where( c => c.Type == "UserId" )
                                              .Select( c => c.Value )

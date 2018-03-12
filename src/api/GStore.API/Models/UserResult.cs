@@ -4,8 +4,6 @@ namespace GStore.API.Models
 {
     public class UserResult
     {
-        public string Id { get; set; }
-
         public string Firstname { get; set; }
 
         public string Lastname { get; set; }
@@ -19,7 +17,6 @@ namespace GStore.API.Models
         public static UserResult Create( User user )
         {
             return new UserResult {
-                Id = user.Id.ToString(),
                 Firstname = user.Firstname,
                 Lastname = user.Lastname,
                 Username = user.Username,

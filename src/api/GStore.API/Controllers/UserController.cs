@@ -27,8 +27,8 @@ namespace GStore.API.Controllers
             base( config, logger, context ) { }
 
         [Authorize( Policy = "AdminApi" )]
-        [HttpGet]
-        public async Task<ObjectResult> Get()
+        [HttpGet("list")]
+        public async Task<ObjectResult> List()
         {
             Logger.LogDebug( "GET[User]" );
 
@@ -76,9 +76,9 @@ namespace GStore.API.Controllers
             var requestAt = DateTime.Now;
             var expiresIn = requestAt + TokenAuthOption.ExpiresSpan;
 
-            var tokenSrv = new TokenService( Config );
-
-            return Ok( new { accesstoken = tokenSrv.GenerateToken( user, expiresIn ) } );
+            return Ok( new {
+                token = TokenService.GenerateToken( user, expiresIn )
+            } );
         }  
     }
 }
