@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace GStore.Test
 {
     [TestClass]
-    public class RepositoryTest
+    public class UserRepositoryTest
     {
         DataContext _context;
 

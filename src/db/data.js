@@ -15,7 +15,7 @@ var addUsers = ()=> {
         "fname": "Antonio",
         "lname": "Di Motta",
         "enabl": "true",
-        "roles": ["admin","reader","writer"]
+        "authz": ["admin","reader","writer"]
     },
     {
         "_id": user2Id,
@@ -25,7 +25,7 @@ var addUsers = ()=> {
         "fname": "Pippo",
         "lname": "Pluto",
         "enabl": "true",
-        "roles": ["reader","writer"]
+        "authz": ["reader","writer"]
     }
  ] )
 };

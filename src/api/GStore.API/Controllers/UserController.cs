@@ -26,14 +26,10 @@ namespace GStore.API.Controllers
         public UserController( IConfiguration config, ILogger<UserController> logger, DataContext context ) :
             base( config, logger, context ) { }
 
-        [Authorize]
+        [Authorize( Policy = "AdminApi" )]
         [HttpGet]
         public ObjectResult Get()
         {
-            //string roles = principal.Claims.Where( c => c.Type == "UserRoles" )
-            //                                 .Select( c => c.Value )
-            //                                 .FirstOrDefault();
-
             Logger.LogDebug( "GET[User]" );
 
             var repository = UnitOfWork.Repository<User>();
@@ -44,6 +40,7 @@ namespace GStore.API.Controllers
             return Ok( users );
         }
 
+        [Authorize( Policy = "AdminApi" )]
         [Authorize]
         [HttpGet( "{id}" )]
         public IActionResult Get( string id )

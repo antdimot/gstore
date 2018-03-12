@@ -33,7 +33,7 @@ namespace GStore.Core.Domain
         [BsonElement( "email" )]
         public string Email { get; set; }
 
-        [BsonElement( "roles" )]
-        public string[] Roles { get; set; }
+        [BsonElement( "authz" )]
+        public string[] Authorizations { get; set; }
     }
 }

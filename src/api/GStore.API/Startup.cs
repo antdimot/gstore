@@ -42,6 +42,15 @@ namespace GStore.API
                 options.TokenValidationParameters = new TokenService( Configuration ).CreateValidationParams();
             } );
 
+            // set authorization policy for api accessing
+            services.AddAuthorization( options =>
+            {
+                options.AddPolicy( "AdminApi", policy =>
+                    policy.RequireAssertion( context =>
+                         context.User.HasClaim( c =>
+                              c.Type == "UserAuthz" && c.Value.Contains("admin") ) ) );
+            } );
+
             services.AddMvc();
             services.AddApiVersioning();
 

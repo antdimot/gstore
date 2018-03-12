@@ -33,7 +33,7 @@ namespace GStore.API.Comon
                 new GenericIdentity( user.Username, "TokenAuth" ),
                 new[] {
                     new Claim( "UserId", user.Id.ToString() ),
-                    new Claim( "UserRoles", user.Roles.Aggregate((current, next) => current + "," + next) )
+                    new Claim( "UserAuthz", user.Authorizations.Aggregate((current, next) => current + "," + next) )
                 }
             );
 
