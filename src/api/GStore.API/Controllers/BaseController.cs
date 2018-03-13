@@ -8,7 +8,7 @@ namespace GStore.API.Controllers
 {
     public abstract class BaseController : Controller
     {
-        TokenService _tokenService;
+        SecurityService _tokenService;
         UnitOfWork _unitOfWork;
 
         protected ILogger Logger { get; private set; }
@@ -25,11 +25,11 @@ namespace GStore.API.Controllers
             } 
         }
 
-        protected TokenService TokenService
+        protected SecurityService SecurityService
         {
             get
             {
-                if( _tokenService == null ) _tokenService = new TokenService( Config );
+                if( _tokenService == null ) _tokenService = new SecurityService( Config );
 
                 return _tokenService;
             }

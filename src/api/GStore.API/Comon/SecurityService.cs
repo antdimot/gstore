@@ -11,7 +11,7 @@ using System.Security.Principal;
 
 namespace GStore.API.Comon
 {
-    public class TokenService
+    public class SecurityService
     {
         public static string Audience { get; } = "GStoreAudience";
         public static string Issuer { get; } = "GStoreIssuer";
@@ -20,7 +20,7 @@ namespace GStore.API.Comon
         string _token_appkey;
         public int _token_expires_mins;
 
-        public TokenService( IConfiguration configuration )
+        public SecurityService( IConfiguration configuration )
         {
             _config = configuration;
 

@@ -64,7 +64,7 @@ namespace GStore.API.Controllers
         {
             Logger.LogDebug( "POST[GeoData]" );
 
-            if( TokenService.ReadToken( Request, out ClaimsPrincipal principal ) )
+            if( SecurityService.ReadToken( Request, out ClaimsPrincipal principal ) )
             {
                 string uid = principal.Claims.Where( c => c.Type == "UserId" )
                                              .Select( c => c.Value )

@@ -20,15 +20,13 @@ namespace GStore.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices( IServiceCollection services )
         {
-            var appSecretKey = Configuration.GetSection( "GStore" ).GetValue<string>( "appkey" );
-
             services.AddAuthentication( options => {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             } )
             .AddJwtBearer( options => {
-                options.Audience = TokenService.Audience;
-                options.TokenValidationParameters = new TokenService( Configuration ).CreateValidationParams();
+                options.Audience = SecurityService.Audience;
+                options.TokenValidationParameters = new SecurityService( Configuration ).CreateValidationParams();
             } );
 
             // set authorization policy for api accessing
@@ -44,7 +42,7 @@ namespace GStore.API
             services.AddApiVersioning();
 
             services.AddScoped<DataContext>();
-            services.AddScoped<TokenService>();
+            services.AddScoped<SecurityService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

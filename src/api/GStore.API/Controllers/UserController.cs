@@ -33,7 +33,7 @@ namespace GStore.API.Controllers
             if( user == null ) return Forbid();
 
             return Ok( new {
-                token = TokenService.GenerateToken( user )
+                token = SecurityService.GenerateToken( user )
             } );
         }
 
@@ -74,7 +74,7 @@ namespace GStore.API.Controllers
         {
             Logger.LogDebug( "GET[Info]" );
 
-            if( TokenService.ReadToken( Request, out ClaimsPrincipal principal ) )
+            if( SecurityService.ReadToken( Request, out ClaimsPrincipal principal ) )
             {
                 string uid = principal.Claims.Where( c => c.Type == "UserId" )
                                       .Select( c => c.Value )
