@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Driver;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace GStore.Test
 {
@@ -29,31 +30,31 @@ namespace GStore.Test
         }
 
         [TestMethod]
-        public void GetList_shouldreturn_notempty_list()
+        public async Task GetList_shouldreturn_notempty_list()
         {  
             var work = new UnitOfWork ( _context );
 
-            var result = work.Repository<User>().GetListAsync();
+            var result = await work.Repository<User>().GetListAsync();
 
-            Assert.IsTrue( result.Result.Count > 0, "no data found" );
+            Assert.IsTrue( result.Count > 0, "no data found" );
         }
 
         [TestMethod]
-        public void GetSingle_shouldreturn_notnull()
+        public async Task GetSingle_shouldreturn_notnull()
         {
             var work = new UnitOfWork( _context );
 
-            var result = work.Repository<User>().GetSingleAsync( u => u.Firstname == "Antonio" );
+            var result = await work.Repository<User>().GetSingleAsync( u => u.Firstname == "Antonio" );
 
-            Assert.IsNotNull( result.Result, "no data found" );
+            Assert.IsNotNull( result, "no data found" );
         }
 
         [TestMethod]
-        public void Insert_shouldreturn_newid()
+        public async Task Insert_shouldreturn_newid()
         {
             var work = new UnitOfWork( _context );
 
-            var result = work.Repository<User>().Insert( new User {
+            var result = await work.Repository<User>().InsertAsync( new User {
                 Firstname = "firstname",
                 Lastname = "lastname",
                 Username = "username",

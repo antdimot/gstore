@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Driver;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace GStore.Test
 {
@@ -29,13 +30,13 @@ namespace GStore.Test
         }
 
         [TestMethod]
-        public void GetByLocation_shouldreturn_notemptylist()
+        public async Task GetByLocation_shouldreturn_notemptylist()
         {
             var work = new UnitOfWork( _context );
 
-            var result = work.GeoRepository<GeoData>().GetByLocationAsync( 14.271879, 40.852815, 1.05 );
+            var result = await work.GeoRepository<GeoData>().GetByLocationAsync( 14.271879, 40.852815, 1.05 );
 
-            Assert.IsTrue( result.Result.Count == 2, "distance is not correct" );
+            Assert.IsTrue( result.Count == 2, "distance is not correct" );
         }
     }
 }
