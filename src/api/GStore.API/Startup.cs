@@ -27,7 +27,7 @@ namespace GStore.API
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             } )
             .AddJwtBearer( options => {
-                options.Audience = TokenAuthOption.Audience;
+                options.Audience = TokenService.Audience;
                 options.TokenValidationParameters = new TokenService( Configuration ).CreateValidationParams();
             } );
 

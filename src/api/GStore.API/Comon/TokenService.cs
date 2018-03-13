@@ -13,6 +13,9 @@ namespace GStore.API.Comon
 {
     public class TokenService
     {
+        public static string Audience { get; } = "GStoreAudience";
+        public static string Issuer { get; } = "GStoreIssuer";
+
         IConfiguration _config;
         string _token_appkey;
         public int _token_expires_mins;
@@ -25,9 +28,14 @@ namespace GStore.API.Comon
             _token_expires_mins = _config.GetSection( "GStore" ).GetValue<int>( "token_expires_mins" );
         }
 
+        public SymmetricSecurityKey GetSecurityKey()
+        {
+            return new SymmetricSecurityKey( System.Text.Encoding.Default.GetBytes( _token_appkey ) );
+        }
+
         public string GenerateToken( User user )
         {
-            var signCredentials = new SigningCredentials( TokenAuthOption.CreateSecurityKey( _token_appkey ), Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature );
+            var signCredentials = new SigningCredentials( GetSecurityKey(), Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature );
 
             var handler = new JwtSecurityTokenHandler();
 
@@ -39,11 +47,12 @@ namespace GStore.API.Comon
                 }
             );
 
+            // set when the token will be expire
             var expiresIn = DateTime.Now + TimeSpan.FromMinutes( _token_expires_mins );
 
             var securityToken = handler.CreateToken( new SecurityTokenDescriptor {
-                Issuer = TokenAuthOption.Issuer,
-                Audience = TokenAuthOption.Audience,
+                Issuer = Issuer,
+                Audience = Audience,
                 SigningCredentials = signCredentials,
                 Subject = identity,
                 Expires = expiresIn
@@ -54,6 +63,7 @@ namespace GStore.API.Comon
 
         public bool ReadToken( HttpRequest request, out ClaimsPrincipal principal )
         {
+            // check token exists
             if( !request.Headers.TryGetValue( "Authorization", out StringValues authzHeaders ) )
             {
                 principal = null;
@@ -74,9 +84,9 @@ namespace GStore.API.Comon
         public TokenValidationParameters CreateValidationParams()
         {
             return new TokenValidationParameters() {
-                IssuerSigningKey = TokenAuthOption.CreateSecurityKey( _token_appkey ),
-                ValidAudience = TokenAuthOption.Audience,
-                ValidIssuer = TokenAuthOption.Issuer,
+                IssuerSigningKey = GetSecurityKey(),
+                ValidAudience = Audience,
+                ValidIssuer = Issuer,
                 // When receiving a token, check that we've signed it.
                 ValidateIssuerSigningKey = true,
                 // When receiving a token, check that it is still valid.
