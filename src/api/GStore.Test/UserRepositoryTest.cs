@@ -32,7 +32,7 @@ namespace GStore.Test
         {  
             var work = new UnitOfWork ( _context );
 
-            var result = await work.Repository<User>().GetListAsync();
+            var result = await work.Repository<User>().GetListAsync( u => u.Enabled );
 
             Assert.IsTrue( result.Count > 0, "no data found" );
         }

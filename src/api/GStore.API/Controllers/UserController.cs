@@ -10,6 +10,7 @@ using System.Security.Claims;
 using MongoDB.Bson;
 using GStore.API.Comon;
 using Microsoft.AspNetCore.Authorization;
+using GStore.Core;
 
 namespace GStore.API.Controllers
 {
@@ -25,9 +26,14 @@ namespace GStore.API.Controllers
         {
             Logger.LogDebug( "POST[Authenticate]" );
 
+            // create hashed version of password
+            var salt = Config.GetSection( "GStore" ).GetValue<string>( "password_salt" );
+            var password_hash = new HashUtility().MakeHash( password, salt );
+
             var user = await UnitOfWork.Repository<User>()
                                        .GetSingleAsync( u => u.Username == username &&
-                                                             u.Password == password &&
+                                                             u.Password == password_hash &&
+                                                             u.Enabled &&
                                                              !u.Deleted );
 
             if( user == null ) return Forbid();

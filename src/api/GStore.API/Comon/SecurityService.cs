@@ -13,12 +13,12 @@ namespace GStore.API.Comon
 {
     public class SecurityService
     {
-        public static string Audience { get; } = "GStoreAudience";
-        public static string Issuer { get; } = "GStoreIssuer";
-
         IConfiguration _config;
         string _token_appkey;
-        public int _token_expires_mins;
+        int _token_expires_mins;
+
+        public static string Audience { get; } = "GStoreAudience";
+        public static string Issuer { get; } = "GStoreIssuer";
 
         public SecurityService( IConfiguration configuration )
         {
@@ -28,6 +28,7 @@ namespace GStore.API.Comon
             _token_expires_mins = _config.GetSection( "GStore" ).GetValue<int>( "token_expires_mins" );
         }
 
+        #region TOKEN MANAGEMENT
         public SymmetricSecurityKey GetSecurityKey()
         {
             return new SymmetricSecurityKey( System.Text.Encoding.Default.GetBytes( _token_appkey ) );
@@ -97,5 +98,6 @@ namespace GStore.API.Comon
                 ClockSkew = TimeSpan.Zero
             };
         }
+        #endregion
     }
 }

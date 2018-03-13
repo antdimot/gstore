@@ -1,5 +1,5 @@
 var db = db.getSiblingDB("demo");
-var password = "P@ssw0rd";
+var password = "HY0Xg3z9/kqaY/xf+YU5FA==";  // P@ssw0rd
 
 var user1Id = ObjectId("5aa3a6c360d53c0e5565f3a9");
 var user2Id = ObjectId("5aa3a6c360d53c0e5565f3aa");
@@ -14,7 +14,7 @@ var addUsers = ()=> {
         "email": "antonio.dimotta@gmail.com",
         "fname": "Antonio",
         "lname": "Di Motta",
-        "enabl": "true",
+        "enabl": true,
         "authz": ["admin","reader","writer"]
     },
     {
@@ -24,7 +24,7 @@ var addUsers = ()=> {
         "email": "pippo@mail.com",
         "fname": "Pippo",
         "lname": "Pluto",
-        "enabl": "true",
+        "enabl": true,
         "authz": ["reader","writer"]
     }
  ] )
