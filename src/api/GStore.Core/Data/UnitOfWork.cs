@@ -1,8 +1,6 @@
-﻿using GStore.Core.Domain;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace GStore.Core.Data
 {

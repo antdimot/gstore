@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using GStore.API.Comon;
 using GStore.API.Models;
-using GStore.Core;
 using GStore.Core.Data;
 using GStore.Core.Domain;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -42,25 +36,6 @@ namespace GStore.API.Controllers
                 if( item == null ) return NotFound( id );
 
                 return Ok( GeoResult.Create( item ) );
-            }
-
-            return BadRequest();
-        }
-
-        [Authorize( Policy = "AdminApi" )]
-        [HttpGet( "content/{id}" )]
-        public async Task<IActionResult> GetContent( string id )
-        {
-            Logger.LogDebug( "GET-CONTENT[GeoData]" );
-
-            if( ObjectId.TryParse( id, out ObjectId oid ) )
-            {
-                var item = await UnitOfWork.Repository<GeoData>()
-                                           .GetByIdAsync( oid );
-
-                if( item == null ) return NotFound( id );
-
-                return Ok( item.Content );
             }
 
             return BadRequest();

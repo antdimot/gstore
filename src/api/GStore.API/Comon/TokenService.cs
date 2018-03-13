@@ -4,28 +4,30 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Threading.Tasks;
 
 namespace GStore.API.Comon
 {
     public class TokenService
     {
         IConfiguration _config;
+        string _token_appkey;
+        public int _token_expires_mins;
 
         public TokenService( IConfiguration configuration )
         {
             _config = configuration;
+
+            _token_appkey = _config.GetSection( "GStore" ).GetValue<string>( "token_appkey" );
+            _token_expires_mins = _config.GetSection( "GStore" ).GetValue<int>( "token_expires_mins" );
         }
 
-        public string GenerateToken( User user, DateTime expires )
+        public string GenerateToken( User user )
         {
-            var appSecretKey = _config.GetSection( "GStore" ).GetValue<string>( "appkey" );
-            var signCredentials = new SigningCredentials( TokenAuthOption.CreateSecurityKey( appSecretKey ), Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature );
+            var signCredentials = new SigningCredentials( TokenAuthOption.CreateSecurityKey( _token_appkey ), Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature );
 
             var handler = new JwtSecurityTokenHandler();
 
@@ -37,12 +39,14 @@ namespace GStore.API.Comon
                 }
             );
 
+            var expiresIn = DateTime.Now + TimeSpan.FromMinutes( _token_expires_mins );
+
             var securityToken = handler.CreateToken( new SecurityTokenDescriptor {
                 Issuer = TokenAuthOption.Issuer,
                 Audience = TokenAuthOption.Audience,
                 SigningCredentials = signCredentials,
                 Subject = identity,
-                Expires = expires
+                Expires = expiresIn
             } );
 
             return handler.WriteToken( securityToken );
@@ -69,10 +73,8 @@ namespace GStore.API.Comon
 
         public TokenValidationParameters CreateValidationParams()
         {
-            var appSecretKey = _config.GetSection( "GStore" ).GetValue<string>( "appkey" );
-
             return new TokenValidationParameters() {
-                IssuerSigningKey = TokenAuthOption.CreateSecurityKey( appSecretKey ),
+                IssuerSigningKey = TokenAuthOption.CreateSecurityKey( _token_appkey ),
                 ValidAudience = TokenAuthOption.Audience,
                 ValidIssuer = TokenAuthOption.Issuer,
                 // When receiving a token, check that we've signed it.

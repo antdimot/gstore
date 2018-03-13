@@ -1,8 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver.GeoJsonObjectModel;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace GStore.Core.Data
 {

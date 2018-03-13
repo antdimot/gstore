@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GStore.Core.Data
+﻿namespace GStore.Core.Data
 {
     public interface IEntity<T>
     {

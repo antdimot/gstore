@@ -1,9 +1,7 @@
 using GStore.Core.Data;
 using GStore.Core.Domain;
 using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MongoDB.Driver;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;

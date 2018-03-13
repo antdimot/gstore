@@ -1,5 +1,4 @@
 ﻿using GStore.Core.Domain;
-using System;
 namespace GStore.API.Models
 {
     public class UserResult
