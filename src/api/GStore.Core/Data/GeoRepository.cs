@@ -21,12 +21,14 @@ namespace GStore.Core.Data
             {
                 var filterBuilder = Builders<T>.Filter;
 
+                // set geo filter
                 var filters = new List<FilterDefinition<T>> {
                                     filterBuilder.GeoWithinCenterSphere(
                                                     o => o.Location,
                                                     longitude, latitude, radiusOf( distance ) )
                 };
 
+                // set tags filter
                 if( tags != null && tags.Length > 0 )
                 {
                     filters.Add( filterBuilder.AnyIn<string>( o => o.Tags, tags ) );
@@ -37,7 +39,7 @@ namespace GStore.Core.Data
                                                    .Limit( Limit )
                                                    .ToCursorAsync();
 
-                return query.ToList();
+                return await query.ToListAsync();
             }
             catch( Exception ex )
             {
