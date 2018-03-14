@@ -13,11 +13,11 @@ namespace GStore.Web.Models
 
         // internal properties
         public string UserId { get; set; }
-        public string[] Roles { get; set; }
+        public string[] Authorizzations { get; set; }
         public string Username { get; set; }
 
         // this property is used for showing user on web site
-        public string Display { get; set; }
+        public string DisplayName { get; set; }
 
         private static IHttpContextAccessor httpContextAccessor;
 

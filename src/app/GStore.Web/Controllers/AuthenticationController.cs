@@ -36,12 +36,12 @@ namespace GStore.Web.Controllers
                 return View( new LoginViewModel { ReturnUrl = returnUrl } ); // normal logon
 
             // logon with a dev user IS ONLY FOR DEVELOPMENT
-            var devUserPassword = Config.GetSection( "GStore" ).GetValue<string>( "DevUserPassword" );
+            var devPassword = Config.GetSection( "GStore" ).GetValue<string>( "DevPassword" );
 
-            var user = await UnitOfWork.Repository<User>()
-                                       .GetSingleAsync( u => u.Username == devUsername &&
-                                                             u.Password == devUserPassword );
-            return LoginUser( user );
+            if( await LoginUser( devUsername, devPassword ) )
+                return RedirectToAction( "main", "home" );
+
+            return View( new LoginViewModel { ReturnUrl = returnUrl } ); // normal logon
         }
 
         [HttpPost]
@@ -51,23 +51,11 @@ namespace GStore.Web.Controllers
         {
             if( ModelState.IsValid )
             {
-                // create hashed version of password
-                var salt = Config.GetSection( "GStore" ).GetValue<string>( "password_salt" );
-                var password_hash = new HashUtility().MakeHash( model.Password, salt );
-
-                var user = await UnitOfWork.Repository<User>()
-                                           .GetSingleAsync( u => u.Username == model.Username &&
-                                                                 u.Password == password_hash &&
-                                                                 u.Enabled && !u.Deleted );
-                if( user != null )
-                {              
-                    return LoginUser( user );       
-                }
-                else
-                {
-                    ModelState.AddModelError( "Username", "Invalid credentials" );
-                }
+                if( await LoginUser( model.Username, model.Password ) )
+                    return RedirectToAction( "main", "home" );
             }
+
+            ModelState.AddModelError( "Username", "Invalid credentials" );
 
             return View( model );
         }
@@ -82,24 +70,37 @@ namespace GStore.Web.Controllers
             return RedirectToAction( "index", "home" );
         }
     
-        private IActionResult LoginUser( User user )
+        private async Task<bool> LoginUser( string username, string password )
         {
-            var claims = new List<Claim> { new Claim( ClaimTypes.Name, user.Username ) };
-            var identity = new ClaimsIdentity( claims, CookieAuthenticationDefaults.AuthenticationScheme );
-            var principal = new ClaimsPrincipal( identity );
+            // create hashed version of password
+            var salt = Config.GetSection( "GStore" ).GetValue<string>( "password_salt" );
+            var password_hash = new HashUtility().MakeHash( password, salt );
 
-            var loggedUserInfo = new LoggedUserInfo {
-                UserId = user.Id.ToString(),
-                Roles = user.Authorizations,          
-                Username = user.Username,
-                Display = $"{user.Firstname} {user.Lastname}",
-            };
+            var user = await UnitOfWork.Repository<User>()
+                                       .GetSingleAsync( u => u.Username == username &&
+                                                             u.Password == password_hash &&
+                                                             u.Enabled && !u.Deleted );
+            if( user != null )
+            {
+                var claims = new List<Claim> { new Claim( ClaimTypes.Name, user.Username ) };
+                var identity = new ClaimsIdentity( claims, CookieAuthenticationDefaults.AuthenticationScheme );
+                var principal = new ClaimsPrincipal( identity );
 
-            LoggedUserInfo.Current = loggedUserInfo; // store user info to session
+                var loggedUserInfo = new LoggedUserInfo {
+                    UserId = user.Id.ToString(),
+                    Authorizzations = user.Authorizations,
+                    Username = user.Username,
+                    DisplayName = $"{user.Firstname} {user.Lastname}",
+                };
 
-            HttpContext.SignInAsync( principal, new AuthenticationProperties { IsPersistent = true } );
+                LoggedUserInfo.Current = loggedUserInfo; // store user info to session
 
-            return RedirectToAction( "index", "home" );
+                await HttpContext.SignInAsync( principal, new AuthenticationProperties { IsPersistent = true } );
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

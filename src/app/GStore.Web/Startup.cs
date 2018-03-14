@@ -57,9 +57,9 @@ namespace GStore.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
-
             app.UseAuthentication();
+            app.UseStaticFiles();
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
