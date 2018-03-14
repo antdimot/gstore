@@ -5,33 +5,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GStore.Web.Models;
+using GStore.Core.Data;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using GStore.Web.Models.Home;
 
 namespace GStore.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
+        public HomeController( IConfiguration config, ILogger logger, DataContext dataContext ) :
+            base( config, logger, dataContext ) { }
+
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View( new IndexViewModel() );
         }
     }
 }
