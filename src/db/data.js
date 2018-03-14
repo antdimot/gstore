@@ -9,9 +9,8 @@ var addUsers = ()=> {
     db.user.insert( [
     {
         "_id": user1Id,
-        "uname": "adimo",
+        "uname": "antonio.dimotta@gmail.com",
         "pword": password,
-        "email": "antonio.dimotta@gmail.com",
         "fname": "Antonio",
         "lname": "Di Motta",
         "enabl": true,
@@ -19,9 +18,8 @@ var addUsers = ()=> {
     },
     {
         "_id": user2Id,
-        "uname": "pippo",
+        "uname": "pippo@mail.com",
         "pword": password,
-        "email": "pippo@mail.com",
         "fname": "Pippo",
         "lname": "Pluto",
         "enabl": true,

@@ -27,9 +27,6 @@ namespace GStore.Core.Domain
         [BsonElement( "pword" )]
         public string Password { get; set; }
 
-        [BsonElement( "email" )]
-        public string Email { get; set; }
-
         [BsonElement( "authz" )]
         public string[] Authorizations { get; set; }
     }

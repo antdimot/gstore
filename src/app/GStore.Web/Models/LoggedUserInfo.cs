@@ -12,8 +12,8 @@ namespace GStore.Web.Models
         const string _gstoreUser= "gstore.loggeduserinfo";
 
         // internal properties
-        public int UserId { get; set; }
-        public int RoleId { get; set; }
+        public string UserId { get; set; }
+        public string[] Roles { get; set; }
         public string Username { get; set; }
 
         // this property is used for showing user on web site

@@ -21,8 +21,8 @@ namespace GStore.Web
         {
             services.AddAuthentication( "GStore" )
                                 .AddCookie( "GStore", options => {
-                                    options.LoginPath = "/Account/LogIn";
-                                    options.LogoutPath = "/Account/LogOff";
+                                    options.LoginPath = "/authentication/LogIn";
+                                    options.LogoutPath = "/authentication/LogOff";
                                 } );
 
             services.AddMvc();
@@ -36,7 +36,12 @@ namespace GStore.Web
                 //options.IdleTimeout = TimeSpan.FromSeconds(10);
                 options.Cookie.HttpOnly = true;
             } );
+
             services.AddScoped<DataContext>();
+
+            var serviceProvider = services.BuildServiceProvider();
+            var accessor = serviceProvider.GetService<IHttpContextAccessor>();
+            GStore.Web.Models.LoggedUserInfo.SetHttpContextAccessor( accessor );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
