@@ -1,4 +1,4 @@
-﻿using GStore.API.Comon;
+﻿using GStore.API.Common;
 using GStore.Core.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

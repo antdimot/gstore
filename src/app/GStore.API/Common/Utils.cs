@@ -1,4 +1,4 @@
-﻿namespace GStore.API.Comon
+﻿namespace GStore.API.Common
 {
     public class Utils
     {

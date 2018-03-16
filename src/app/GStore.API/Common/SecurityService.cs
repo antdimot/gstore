@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace GStore.API.Comon
+namespace GStore.API.Common
 {
     public class SecurityService
     {
@@ -95,8 +95,18 @@ namespace GStore.API.Comon
                 // This defines the maximum allowable clock skew - i.e. provides a tolerance on the token expiry time 
                 // when validating the lifetime. As we're creating the tokens locally and validating them on the same 
                 // machines which should have synchronised time, this can be set to zero. and default value will be 5minutes
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero,
+                LifetimeValidator = LifetimeValidator
             };
+        }
+
+        private bool LifetimeValidator( DateTime? notBefore, DateTime? expires, SecurityToken token, TokenValidationParameters @params )
+        {
+            if( expires != null )
+            {
+                return expires > DateTime.UtcNow;
+            }
+            return false;
         }
         #endregion
     }

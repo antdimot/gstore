@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using GStore.API.Models;
 using System.Security.Claims;
 using MongoDB.Bson;
-using GStore.API.Comon;
+using GStore.API.Common;
 using Microsoft.AspNetCore.Authorization;
 using GStore.Core;
 
