@@ -14,6 +14,7 @@ using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace GStore.API.Controllers
 {
+    [Produces( "application/json" )]
     [ApiVersion( "1.0" )]
     [Route( "api/v{version:apiVersion}/geodata" )]
     [Authorize]
@@ -66,6 +67,9 @@ namespace GStore.API.Controllers
 
             if( SecurityService.ReadToken( Request, out ClaimsPrincipal principal ) )
             {
+                // check if content exceeds max allowed size
+                if( content.Length > 512 ) return BadRequest();
+
                 string uid = principal.Claims.Where( c => c.Type == "UserId" )
                                              .Select( c => c.Value )
                                              .FirstOrDefault();

@@ -9,21 +9,21 @@ var addUsers = ()=> {
     db.user.insert( [
     {
         "_id": user1Id,
-        "uname": "antonio.dimotta@gmail.com",
-        "pword": password,
-        "fname": "Antonio",
-        "lname": "Di Motta",
-        "enabl": true,
-        "authz": ["admin","reader","writer"]
+        "un": "antonio.dimotta@gmail.com",
+        "pw": password,
+        "fn": "Antonio",
+        "ln": "Di Motta",
+        "en": true,
+        "au": ["admin","reader","writer"]
     },
     {
         "_id": user2Id,
-        "uname": "pippo@mail.com",
-        "pword": password,
-        "fname": "Pippo",
-        "lname": "Pluto",
-        "enabl": true,
-        "authz": ["reader","writer"]
+        "un": "pippo@mail.com",
+        "pw": password,
+        "fn": "Pippo",
+        "ln": "Pluto",
+        "en": true,
+        "au": ["reader","writer"]
     }
  ] )
 };
@@ -35,55 +35,55 @@ var obj3Id = ObjectId();
 var obj4Id = ObjectId();
 var addData = ()=> {
     db.geodata.drop();
-    db.geodata.createIndex({ location: "2dsphere" })
+    db.geodata.createIndex({ "lo": "2dsphere" })
     db.geodata.insert( [
     {
         "_id": obj1Id,
-        "location": {
+        "lo": {
             "type": "Point",
             "coordinates": [14.283069,40.848082]
          },
-        "content": "Mate naples site 2",
-        "name": "Mate2",
-        "ctype": "text/plain",
-        "tags": ["company"],
-        "uid" : user1Id
+        "cn": "Mate naples site 2",
+        "nm": "Mate2",
+        "ct": "text/plain",
+        "tg": ["company"],
+        "ui" : user1Id
     },
     {
         "_id": obj2Id,
-        "location": {
+        "lo": {
             "type": "Point",
             "coordinates": [14.274900,40.850506]
          },
-        "content": "Hotel Ramada",
-        "name": "Hotel",
-        "ctype": "text/plain",
-        "tags": ["hotel"],
-        "uid" : user1Id
+        "cn": "Hotel Ramada",
+        "nm": "Hotel",
+        "ct": "text/plain",
+        "tg": ["hotel"],
+        "ui" : user1Id
     },
     {
         "_id": obj3Id,
-        "location": {
+        "lo": {
             "type": "Point",
             "coordinates": [14.271879,40.852815]
          },
-        "content": "Naples train station",
-        "name": "Station",
-        "ctype": "text/plain",
-        "tags": ["city"],
-        "uid" : user1Id
+        "cn": "Naples train station",
+        "nm": "Station",
+        "ct": "text/plain",
+        "tg": ["city"],
+        "ui" : user1Id
     },
     {
         "_id": obj4Id,
-        "location": {
+        "lo": {
             "type": "Point",
             "coordinates": [14.774473,40.681562]
          },
-        "content": "Mate naples site 1",
-        "name": "Mate1",
-        "ctype": "text/plain",
-        "tags": ["company"],
-        "uid" : user1Id
+        "cn": "Mate naples site 1",
+        "nm": "Mate1",
+        "ct": "text/plain",
+        "tg": ["company"],
+        "ui" : user1Id
     },
  ] )
 };

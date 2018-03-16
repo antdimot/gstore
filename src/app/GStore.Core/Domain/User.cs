@@ -9,25 +9,25 @@ namespace GStore.Core.Domain
         [BsonElement( "_id" )]
         public ObjectId Id { get; set; }
 
-        [BsonElement( "del" )]
+        [BsonElement( "de" )]
         public bool Deleted { get; set; } = false;
 
-        [BsonElement( "enabl" )]
+        [BsonElement( "en" )]
         public bool Enabled { get; set; }
 
-        [BsonElement( "fname" )]
+        [BsonElement( "fn" )]
         public string Firstname { get; set; }
 
-        [BsonElement( "lname" )]
+        [BsonElement( "ln" )]
         public string Lastname { get; set; }
 
-        [BsonElement( "uname" )]
+        [BsonElement( "un" )]
         public string Username { get; set; }
 
-        [BsonElement( "pword" )]
+        [BsonElement( "pw" )]
         public string Password { get; set; }
 
-        [BsonElement( "authz" )]
+        [BsonElement( "au" )]
         public string[] Authorizations { get; set; }
     }
 }

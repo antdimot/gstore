@@ -38,7 +38,10 @@ namespace GStore.API
                               c.Type == "UserAuthz" && c.Value.Contains("admin") ) ) );
             } );
 
-            services.AddMvc();
+            services.AddMvc( options => {
+                //options.RequireHttpsPermanent = true;
+            } );
+
             services.AddApiVersioning();
 
             services.AddScoped<DataContext>();

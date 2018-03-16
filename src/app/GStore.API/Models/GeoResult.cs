@@ -4,24 +4,24 @@ namespace GStore.API.Models
 {
     public class GeoResult
     {
-        public double Longitude { get; set; }
+        public double Lon { get; set; }
 
-        public double Latitude { get; set; }
+        public double Lat { get; set; }
 
         public object Content { get; set; }
 
-        public string ContentType { get; set; }
+        //public string ContentType { get; set; }
 
-        public string[] Tags { get; set; }
+        public string[] Tag { get; set; }
 
         public static GeoResult Create( GeoData data )
         {
             return new GeoResult {
-                Longitude = data.Location.Coordinates.Longitude,
-                Latitude = data.Location.Coordinates.Latitude,
+                Lon = data.Location.Coordinates.Longitude,
+                Lat = data.Location.Coordinates.Latitude,
                 Content = data.Content,
-                ContentType = data.ContentType,
-                Tags = data.Tags
+                //ContentType = data.ContentType,
+                Tag = data.Tags
             };
         }
     }

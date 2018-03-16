@@ -14,6 +14,7 @@ using GStore.Core;
 
 namespace GStore.API.Controllers
 {
+    [Produces( "application/json" )]
     [ApiVersion( "1.0" )]
     [Route( "api/v{version:apiVersion}/user" )]
     public class UserController : BaseController

@@ -11,28 +11,28 @@ namespace GStore.Core.Domain
         [BsonElement( "_id" )]
         public ObjectId Id { get; set; }
 
-        [BsonElement( "del" )]
+        [BsonElement( "de" )]
         public bool Deleted { get; set; } = false;
 
-        [BsonElement( "content" )]
+        [BsonElement( "cn" )]
         public Object Content { get; set; }
 
-        [BsonElement( "location" )]
+        [BsonElement( "lo" )]
         public GeoJsonPoint<GeoJson2DGeographicCoordinates> Location { get; set; }
 
-        [BsonElement( "name" )]
+        [BsonElement( "nm" )]
         public string Name { get; set; }
 
-        [BsonElement( "descr" )]
+        [BsonElement( "ds" )]
         public string Description { get; set; }
 
-        [BsonElement("ctype")]
+        [BsonElement("ct")]
         public string ContentType { get; set; }
 
-        [BsonElement("uid")]
+        [BsonElement("ui")]
         public ObjectId UserId { get; set; }
 
-        [BsonElement( "tags" )]
-        public string[] Tags { get; set; }
+        [BsonElement( "tg" )]
+        public string[] Tags { get; set; } = new string[] { };
     }
 }
