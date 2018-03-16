@@ -1,4 +1,4 @@
-var db = db.getSiblingDB("demo");
+var db = db.getSiblingDB("gstore");
 var password = "HY0Xg3z9/kqaY/xf+YU5FA==";  // P@ssw0rd
 
 var user1Id = ObjectId("5aa3a6c360d53c0e5565f3a9");
