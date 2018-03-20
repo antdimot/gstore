@@ -56,8 +56,7 @@ namespace GStore.Test
                 Firstname = "firstname",
                 Lastname = "lastname",
                 Username = "username",
-                Password = "password",
-                Email = "email"
+                Password = "password"
             } );
 
             Assert.IsNotNull( result.Id, "no data found" );
