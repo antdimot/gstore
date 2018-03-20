@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{2A01EFAA-8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GStore.Test", "GStore.Test\GStore.Test.csproj", "{E4F766ED-2B4F-4EC6-B7B5-49775C5E4F25}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GStore.Web", "GStore.Web\GStore.Web.csproj", "{9492A10C-E1E2-4021-BE47-20617870019A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GStore.Web", "GStore.Web\GStore.Web.csproj", "{9492A10C-E1E2-4021-BE47-20617870019A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
