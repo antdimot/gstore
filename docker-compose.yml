@@ -1,8 +1,8 @@
-version: '2'
+version: '3'
 
 services:
   api:
-    build: .
+    build: ./src
     image: antdimot/gstore
     environment:
     - ASPNETCORE_URLS=http://+:5000

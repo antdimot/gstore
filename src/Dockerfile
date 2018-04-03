@@ -1,7 +1,7 @@
 # Stage 1 - build project
 FROM microsoft/aspnetcore-build:2.0.6-2.1.101 AS builder
 WORKDIR /source
-COPY ./src/app .
+COPY ./app .
 WORKDIR /source/GStore.API
 RUN dotnet restore
 RUN dotnet build -c Release -o /build
