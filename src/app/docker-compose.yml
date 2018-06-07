@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: GStore.API/Dockerfile
-    image: antdimot/gstore
+    image: gstore/api
     environment:
     - ASPNETCORE_URLS=http://+:5000
     - ASPNETCORE_ENVIRONMENT=Staging
