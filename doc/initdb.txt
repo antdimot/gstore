@@ -1,4 +1,0 @@
-
-docker run --rm -v ${PWD}:/src -v gstore-vol01:/data alpine:3.7 cp /src/data.js /data
-
-docker exec -it gstore-db mongo localhost:27017/gstore /data/db/data.js

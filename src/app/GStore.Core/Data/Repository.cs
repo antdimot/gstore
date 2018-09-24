@@ -154,7 +154,8 @@ namespace GStore.Core.Data
             {
                 if( condition == null ) condition = _ => true;
 
-                return await Collection.CountAsync( condition );
+                return await Collection.CountDocumentsAsync( condition );
+                // return await Collection.CountAsync( condition );
             }
             catch( Exception ex )
             {
