@@ -5,14 +5,14 @@
    "version": "0.2.0",
    "configurations": [
         {
-            "name": ".NET Core Launch (web)",
+            "name": ".NET Core Launch (api)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/api/GStore.API/bin/Debug/netcoreapp2.0/GStore.API.dll",
+            "program": "${workspaceFolder}/src/app/GStore.API/bin/Debug/netcoreapp2.1/GStore.API.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/api/GStore.API",
+            "cwd": "${workspaceFolder}/src/app/GStore.API",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {

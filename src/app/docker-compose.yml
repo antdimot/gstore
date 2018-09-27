@@ -7,8 +7,12 @@ services:
       dockerfile: GStore.API/Dockerfile
     image: gstore/api
     environment:
-    - ASPNETCORE_URLS=http://+:5000
-    - ASPNETCORE_ENVIRONMENT=Staging
+      ASPNETCORE_URLS: http://+:5000
+      ASPNETCORE_ENVIRONMENT: Staging
+      TZ: Europe/Rome
+    networks:
+    - backend
+    - frontend
     ports:
     - 5000:5000
     links: 
@@ -16,17 +20,26 @@ services:
     depends_on:
     - db
     volumes:
-    - data:/srv/gstore
+    - gstore:/srv/gstore
     container_name: gstore-api
   db:
-    image: mongo:3.6.5
+    image: mongo:4.0
     ports:
     - 27017:27017 
     restart: always
-    # environment:
+    environment:
+      # MONGO_INITDB_ROOT_USERNAME: root
+      # MONGO_INITDB_ROOT_PASSWORD: P@ssw0rd
+      TZ: Europe/Rome
+    networks:
+    - backend
     volumes:
-    - data:/data/db
+    - gstore:/data/db
+    - gstore:/data/configdb
+    - ../db:/docker-entrypoint-initdb.d/*.js
     container_name: gstore-db
 volumes:
-  data:
-    name: gstore-vol01
+  gstore:
+networks:
+  frontend:
+  backend:

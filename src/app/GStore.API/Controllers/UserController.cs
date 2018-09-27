@@ -27,6 +27,8 @@ namespace GStore.API.Controllers
         {
             Logger.LogDebug( "POST[Authenticate]" );
 
+            if( string.IsNullOrEmpty( username ) || string.IsNullOrEmpty( password ) ) return BadRequest();
+
             // create hashed version of password
             var salt = Config.GetSection( "GStore" ).GetValue<string>( "password_salt" );
             var password_hash = new HashUtility().MakeHash( password, salt );
