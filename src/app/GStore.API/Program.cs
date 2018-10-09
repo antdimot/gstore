@@ -7,16 +7,6 @@ namespace GStore.API
 {
     public class Program
     {
-        //public static void Main(string[] args)
-        //{
-        //    BuildWebHost(args).Run();
-        //}
-
-        //public static IWebHost BuildWebHost( string[] args ) =>
-        //WebHost.CreateDefaultBuilder( args )
-        //   .UseStartup<Startup>()
-        //   .Build();
-
         public static int Main( string[] args )
         {
             try
@@ -24,9 +14,8 @@ namespace GStore.API
                 var hostBuilder = WebHost.CreateDefaultBuilder( args );
 
                 var host = hostBuilder.UseStartup<Startup>()
-                                      .UseSerilog( ( hostingContext, loggerConfiguration ) => loggerConfiguration
-                                                        .ReadFrom.Configuration( hostingContext.Configuration ) )
-                                      .Build();
+                                      .UseSerilog( ( hostingContext, loggerConfiguration ) =>
+                                                        loggerConfiguration.ReadFrom.Configuration( hostingContext.Configuration ) ).Build();
 
                 host.Run();
 

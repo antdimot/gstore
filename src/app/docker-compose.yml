@@ -10,9 +10,6 @@ services:
       ASPNETCORE_URLS: http://+:5000
       ASPNETCORE_ENVIRONMENT: Staging
       TZ: Europe/Rome
-    networks:
-    - backend
-    - frontend
     ports:
     - 5000:5000
     links: 
@@ -21,6 +18,9 @@ services:
     - db
     volumes:
     - gstore:/srv/gstore
+    networks:
+      - backend
+      - frontend
     container_name: gstore-api
   db:
     image: mongo:4.0
@@ -29,12 +29,12 @@ services:
     restart: always
     environment:
       TZ: Europe/Rome
-    networks:
-    - backend
     volumes:
     - gstore:/data/db
     - gstore:/data/configdb
     - ../db:/docker-entrypoint-initdb.d/*.js
+    networks:
+    - backend
     container_name: gstore-db
 volumes:
   gstore:
