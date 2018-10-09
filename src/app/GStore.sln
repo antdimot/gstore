@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GStore.Core", "GStore.Core\GStore.Core.csproj", "{109E1725-BD1D-47FA-9D8B-757D43374C20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GStore.Core", "GStore.Core\GStore.Core.csproj", "{109E1725-BD1D-47FA-9D8B-757D43374C20}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GStore.API", "GStore.API\GStore.API.csproj", "{7ABAFD7F-950F-4C20-9440-3EF889387B5F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GStore.API", "GStore.API\GStore.API.csproj", "{7ABAFD7F-950F-4C20-9440-3EF889387B5F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{2A01EFAA-81EB-41E3-9A23-3AEEE93CAAC2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GStore.Test", "GStore.Test\GStore.Test.csproj", "{E4F766ED-2B4F-4EC6-B7B5-49775C5E4F25}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GStore.Web", "GStore.Web\GStore.Web.csproj", "{9492A10C-E1E2-4021-BE47-20617870019A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GStore.Test", "GStore.Test\GStore.Test.csproj", "{E4F766ED-2B4F-4EC6-B7B5-49775C5E4F25}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{64BFAC33-F535-438B-9CD5-CE869E3ADC57}"
 	ProjectSection(SolutionItems) = preProject
@@ -36,10 +34,6 @@ Global
 		{E4F766ED-2B4F-4EC6-B7B5-49775C5E4F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4F766ED-2B4F-4EC6-B7B5-49775C5E4F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4F766ED-2B4F-4EC6-B7B5-49775C5E4F25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9492A10C-E1E2-4021-BE47-20617870019A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9492A10C-E1E2-4021-BE47-20617870019A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9492A10C-E1E2-4021-BE47-20617870019A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9492A10C-E1E2-4021-BE47-20617870019A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
