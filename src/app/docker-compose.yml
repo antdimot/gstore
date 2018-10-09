@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: GStore.API/Dockerfile
-    image: gstore/api
+    image: antdimot/gstore
     environment:
       ASPNETCORE_URLS: http://+:5000
       ASPNETCORE_ENVIRONMENT: Staging
@@ -28,8 +28,6 @@ services:
     - 27017:27017 
     restart: always
     environment:
-      # MONGO_INITDB_ROOT_USERNAME: root
-      # MONGO_INITDB_ROOT_PASSWORD: P@ssw0rd
       TZ: Europe/Rome
     networks:
     - backend
