@@ -8,7 +8,7 @@ var addUsers = ()=> {
     db.user.insert( [
     {
         "_id": user1Id,
-        "un": "antonio.dimotta@gmail.com",
+        "un": "antdimot",
         "pw": password,
         "fn": "Antonio",
         "ln": "Di Motta",
