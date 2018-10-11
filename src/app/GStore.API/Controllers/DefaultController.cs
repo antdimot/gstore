@@ -14,11 +14,11 @@ namespace GStore.API.Controllers
             base( config, logger, context ) { }
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        public string Get()
         {
             Logger.LogDebug( "GET[Default]" );
 
-            return new string[] { "Hello", "World!" };
+            return "GStore API service up!";
         }
     }
 }
