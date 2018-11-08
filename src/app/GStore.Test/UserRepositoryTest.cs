@@ -42,7 +42,7 @@ namespace GStore.Test
         {
             var work = new UnitOfWork( _context );
 
-            var result = await work.Repository<User>().GetSingleAsync( u => u.Firstname == "Antonio" );
+            var result = await work.Repository<User>().GetSingleAsync( u => u.Firstname == "firstname" );
 
             Assert.IsNotNull( result, "no data found" );
         }

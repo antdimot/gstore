@@ -3,8 +3,13 @@ using GStore.Core.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Linq;
 
 namespace GStore.API
 {
@@ -38,26 +43,88 @@ namespace GStore.API
                               c.Type == "UserAuthz" && c.Value.Contains("admin") ) ) );
             } );
 
-            services.AddMvc( options => {
+            services.AddCors();
+
+            services.AddMvc( options =>
+            {
                 //options.RequireHttpsPermanent = true;
-            } );
+            } ).SetCompatibilityVersion( CompatibilityVersion.Version_2_1 );
 
             services.AddApiVersioning();
+
+            services.AddSwaggerGen( c =>
+            {
+                c.SwaggerDoc( "v1", new Info
+                {
+                    Title = "GStore API",
+                    Description = "A service for storing and retrieving data by latitude and longitude.",
+                    Version = "1",
+                    Contact = new Contact
+                    {
+                        Name = "",
+                        Email = ""
+                    },
+                } );
+                c.OperationFilter<VersionOperationFilter>();
+                c.DocumentFilter<ApplyDocumentVersionExtensions>();
+            } );
 
             services.AddScoped<DataContext>();
             services.AddScoped<SecurityService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if( env.IsDevelopment() )
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if( env.IsDevelopment() )
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+
+            app.UseCors( builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader() );
 
             app.UseAuthentication();
             app.UseMvc();
+
+            app.UseSwagger( c => { c.RouteTemplate = "api/swagger/{documentName}/swagger.json"; } );
+            app.UseSwaggerUI( c => {
+                c.SwaggerEndpoint( "v1/swagger.json", "GStore API" );
+                c.RoutePrefix = "api/swagger";
+            } );
+        }
+    }
+
+    public class ApiExplorerGroupPerVersionConvention : IControllerModelConvention
+    {
+        public void Apply( ControllerModel controller )
+        {
+            var controllerNamespace = controller.ControllerType.Namespace;
+            var apiVersion = controllerNamespace.Split('.').Last().ToLower();
+
+            controller.ApiExplorer.GroupName = apiVersion;
+        }
+    }
+
+    internal class ApplyDocumentVersionExtensions : IDocumentFilter
+    {
+        public void Apply( SwaggerDocument swaggerDoc, DocumentFilterContext context )
+        {
+            swaggerDoc.Paths = swaggerDoc.Paths
+            .ToDictionary(
+                path => path.Key.Replace( "{version}", swaggerDoc.Info.Version ),
+                path => path.Value
+            );
+        }
+    }
+
+    internal class VersionOperationFilter : IOperationFilter
+    {
+        public void Apply( Operation operation, OperationFilterContext context )
+        {
+            var version = operation.Parameters?.FirstOrDefault(p => p.Name == "version");
+            if( version != null )
+            {
+                operation.Parameters.Remove( version );
+            }
         }
     }
 }

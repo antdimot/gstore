@@ -32,7 +32,7 @@ namespace GStore.Test
         {
             var work = new UnitOfWork( _context );
 
-            var result = await work.GeoRepository<GeoData>().GetByLocationAsync( 14.271879, 40.852815, 1.05 );
+            var result = await work.GeoRepository<GeoData>().GetByLocationAsync( -74.046689, 40.68924941, 1.0 );
 
             Assert.IsTrue( result.Count == 2, "distance is not correct" );
         }

@@ -18,12 +18,11 @@
     },
     "GStore.API": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "api/v1/default",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:5000"
+      "applicationUrl": ""
     }
   }
 }

@@ -5,6 +5,7 @@
 1. git clone https://github.com/antdimot/gstore.git
 2. cd gstore/src/app
 3. docker-compose up -d
+4. access to [api documentation](http://localhost:5000/api/swagger)
 
 ### Testing
 
