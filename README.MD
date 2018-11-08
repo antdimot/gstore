@@ -11,7 +11,7 @@
 
 Making request for getting a valid access token by username and password.
 
-    curl -X POST --data "username=appuser&password=P@ssw0rd" http://localhost:5000/api/v1.0/user/authenticate
+    curl -X POST --data "username=admin&password=P@ssw0rd" http://localhost:5000/api/v1.0/user/authenticate
 
 
 Making request for getting contents by latitude, longitude and distance (km).

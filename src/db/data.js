@@ -15,7 +15,7 @@ var addUsers = ()=> {
     db.user.insert( [
     {
         "_id": user1Id,
-        "un": "appuser",
+        "un": "admin",
         "pw": password,
         "fn": "firstname",
         "ln": "lastname",

@@ -24,8 +24,6 @@ services:
     container_name: gstore-api
   db:
     image: mongo:4.0
-    ports:
-    - 27017:27017 
     restart: always
     environment:
       TZ: Europe/Rome
