@@ -1,5 +1,12 @@
+// Example of database initialization
+
+/*
+Add application users enabled to access.
+The property "au" set the api authorization policies
+*/
 var db = db.getSiblingDB("gstore");
-var password = "HY0Xg3z9/kqaY/xf+YU5FA==";  // P@ssw0rd
+// hashed value of string P@ssw0rd
+var password = "HY0Xg3z9/kqaY/xf+YU5FA==";
 
 var user1Id = ObjectId("5aa3a6c360d53c0e5565f3a9");
 var addUsers = ()=> {
@@ -8,10 +15,10 @@ var addUsers = ()=> {
     db.user.insert( [
     {
         "_id": user1Id,
-        "un": "antdimot",
+        "un": "appuser",
         "pw": password,
-        "fn": "Antonio",
-        "ln": "Di Motta",
+        "fn": "firstname",
+        "ln": "lastname",
         "en": true,
         "au": ["admin","reader","writer"]
     }
@@ -19,6 +26,9 @@ var addUsers = ()=> {
 };
 addUsers();
 
+/*
+Add localized contents information.
+*/
 var obj1Id = ObjectId();
 var addData = ()=> {
     db.geodata.drop();
@@ -28,12 +38,12 @@ var addData = ()=> {
         "_id": obj1Id,
         "lo": {
             "type": "Point",
-            "coordinates": [14.271879,40.852815]
+            "coordinates": [-74.046689,40.68924941]
          },
-        "cn": "Naples train station",
+        "cn": "Statue of Liberty",
         "nm": "Station",
         "ct": "text/plain",
-        "tg": ["city"],
+        "tg": ["monument"],
         "ui" : user1Id
     },
  ] )

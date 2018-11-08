@@ -1,11 +1,19 @@
 # GSTORE
-A service for storing and retrieving data by latitude and longitude.
 
-## Instructions for building and running solution
+## Instructions for building and running with Docker
 
-#### START APPLICATION:
-    1. git clone https://github.com/antdimot/gstore.git
-    1. cd gstore/src/app
-    2. docker-compose up -d
-    3. curl -X POST --data "username=antdimot&password=P@ssw0rd" http://localhost:5000/api/v1.0/user/authenticate
-    4. curl -X GET -H "Accept: application/json" -H "Authorization: Bearer [TOKEN]" "http://localhost:5000/api/v1.0/geodata/location?lon=14.2749&lat=40.850506&distance=0.5"
+1. git clone https://github.com/antdimot/gstore.git
+2. cd gstore/src/app
+3. docker-compose up -d
+
+### Testing
+#### Get access token
+Making request for getting a valid access token by username and password.
+
+    curl -X POST --data "username=appuser&password=P@ssw0rd" http://localhost:5000/api/v1.0/user/authenticate
+
+
+#### Retrieving data by latitude and longitude
+Making request for getting contents by latitude, longitude and distance (km).
+
+    curl -X GET -H "Accept: application/json" -H "Authorization: Bearer ACCESS-TOKEN-HERE" "http://localhost:5000/api/v1.0/geodata/location?lon=-74.046689&lat=40.68924941&distance=0.1"
