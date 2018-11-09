@@ -18,4 +18,5 @@ RUN dotnet publish GStore.API.csproj -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+COPY ./db/data.js /app
 ENTRYPOINT ["dotnet", "GStore.API.dll"]

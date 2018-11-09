@@ -17,7 +17,7 @@ services:
     depends_on:
     - db
     volumes:
-    - gstore:/srv/gstore
+    - gstore-vol-api:/app
     networks:
       - backend
       - frontend
@@ -28,14 +28,15 @@ services:
     environment:
       TZ: Europe/Rome
     volumes:
-    - gstore:/data/db
-    - gstore:/data/configdb
-    - ../db:/docker-entrypoint-initdb.d/*.js
+    - gstore-vol-db:/data/db
+    - gstore-vol-db:/data/configdb
+    - gstore-vol-api:/docker-entrypoint-initdb.d/data.js
     networks:
     - backend
     container_name: gstore-db
 volumes:
-  gstore:
+  gstore-vol-db:
+  gstore-vol-api:
 networks:
   frontend:
   backend:
