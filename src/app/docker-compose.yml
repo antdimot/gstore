@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  api:
+  gstore-api:
     build:
       context: .
       dockerfile: GStore.API/Dockerfile
@@ -11,18 +11,17 @@ services:
       ASPNETCORE_ENVIRONMENT: Staging
       TZ: Europe/Rome
     ports:
-    - 5000:5000
+    - "5000:5000"
     links: 
-    - db:gstore-db
+    - gstore-db
     depends_on:
-    - db
+    - gstore-db
     volumes:
     - gstore-vol-api:/app
     networks:
       - backend
       - frontend
-    container_name: gstore-api
-  db:
+  gstore-db:
     image: mongo:4.0
     restart: always
     environment:
@@ -33,7 +32,6 @@ services:
     - gstore-vol-api:/docker-entrypoint-initdb.d/data.js
     networks:
     - backend
-    container_name: gstore-db
 volumes:
   gstore-vol-db:
   gstore-vol-api:
