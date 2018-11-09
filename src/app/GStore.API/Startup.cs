@@ -9,7 +9,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace GStore.API
 {
@@ -61,12 +64,17 @@ namespace GStore.API
                     Version = "1",
                     Contact = new Contact
                     {
-                        Name = "",
-                        Email = ""
+                        Name = "Antonio Di Motta",
+                        Email = string.Empty,
+                        Url = "https://twitter.com/dimotta"
                     },
                 } );
                 c.OperationFilter<VersionOperationFilter>();
                 c.DocumentFilter<ApplyDocumentVersionExtensions>();
+                            // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             } );
 
             services.AddScoped<DataContext>();

@@ -5,6 +5,7 @@ using Serilog;
 
 namespace GStore.API
 {
+#pragma warning disable CS1591
     public class Program
     {
         public static int Main( string[] args )
@@ -33,4 +34,5 @@ namespace GStore.API
             }
         }     
     }
+#pragma warning restore CS1591
 }

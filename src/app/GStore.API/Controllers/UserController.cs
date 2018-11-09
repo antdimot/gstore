@@ -22,6 +22,16 @@ namespace GStore.API.Controllers
         public UserController( IConfiguration config, ILogger<UserController> logger, DataContext context ) :
             base( config, logger, context ) { }
 
+        /// <summary>
+        /// Provides access token by authentication of credentials 
+        /// </summary>
+        /// <param name="username">Username</param>
+        /// <param name="password">Password</param>
+        /// <returns>
+        /// {
+        ///      "token": "....."
+        /// }
+        /// </returns>
         [HttpPost( "authenticate" )]
         public async Task<IActionResult> Authenticate( string username, string password )
         {

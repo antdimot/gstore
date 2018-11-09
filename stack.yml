@@ -2,10 +2,13 @@ version: '3.4'
 
 services:
   gstore-api:
-    build:
-      context: .
-      dockerfile: GStore.API/Dockerfile
     image: antdimot/gstore
+    environment:
+      ASPNETCORE_URLS: http://+:5000
+      ASPNETCORE_ENVIRONMENT: Production
+      TZ: Europe/Rome
+    ports:
+    - "5000:5000"
     links: 
     - gstore-db
     depends_on:
@@ -17,9 +20,11 @@ services:
     - frontend
   gstore-db:
     image: mongo:4.0
+    restart: always
     volumes:
     - gstore-vol-db:/data/db
     - gstore-vol-db:/data/configdb
+    - gstore-vol-api:/docker-entrypoint-initdb.d/data.js
     networks:
     - backend
 volumes:
