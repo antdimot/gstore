@@ -1,10 +1,8 @@
 # GSTore
-## Abstract
-
+### Abstract
 There are a lot of contents that's need to be linked with a particular location. This service provides a set of rest api for storing contents using latitude and longitude, which makes easier to find them later.
 
-## Examples
-
+### Examples
 Request for getting a valid access token by username and password.
 
     curl -X POST --data "username=admin&password=P@ssw0rd" http://localhost:5000/api/v1.0/user/authenticate
@@ -16,7 +14,6 @@ Request for getting contents by latitude, longitude and distance (Km).
 
 
 ## Building and running instructions
-
 1. git clone https://github.com/antdimot/gstore.git
 2. cd gstore/src/app
 3. docker-compose up -d
