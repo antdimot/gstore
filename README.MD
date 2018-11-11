@@ -19,7 +19,7 @@ Making request for getting contents by latitude, longitude and distance (km).
 1. git clone https://github.com/antdimot/gstore.git
 2. cd gstore/src/app
 3. docker-compose up -d
-4. open your browser to http://localhost:5000/api/swagger
+4. check api doc at http://localhost:5000/api/swagger
 
 ## Play with Docker
 Another way for testing GSTore is by using PWD which is a simple, interactive and playground environment.
