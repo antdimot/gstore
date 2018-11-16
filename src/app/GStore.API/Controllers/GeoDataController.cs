@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using GStore.API.Common;
+﻿using GStore.API.Common;
 using GStore.API.Models;
 using GStore.Core.Data;
 using GStore.Core.Domain;
@@ -11,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver.GeoJsonObjectModel;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace GStore.API.Controllers
 {
@@ -21,7 +21,8 @@ namespace GStore.API.Controllers
     public class GeoDataController : BaseController
     {
         public GeoDataController( IConfiguration config, ILogger<GeoDataController> logger, DataContext context ) :
-            base( config, logger, context ) { }
+            base( config, logger, context )
+        { }
 
         [Authorize( Policy = "AdminApi" )]
         [HttpGet( "{id}" )]
@@ -78,11 +79,12 @@ namespace GStore.API.Controllers
                 {
                     var repository = UnitOfWork.Repository<GeoData>();
 
-                    var result = await repository.InsertAsync( new GeoData {
-                                            Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon, lat ) ),
-                                            Content = content,
-                                            ContentType = Utils.ContentType.Text,
-                                            UserId = ObjectId.Parse( uid )
+                    var result = await repository.InsertAsync( new GeoData
+                    {
+                        Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon, lat ) ),
+                        Content = content,
+                        ContentType = Utils.ContentType.Text,
+                        UserId = ObjectId.Parse( uid )
                     } );
 
                     return Ok();

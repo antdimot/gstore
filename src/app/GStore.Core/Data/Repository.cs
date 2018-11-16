@@ -11,7 +11,7 @@ namespace GStore.Core.Data
 {
     public class Repository<T> where T : IEntity<ObjectId>
     {
-        protected int Limit { get; private set; } = 1000; // max number of items returned from query
+        protected int Limit { get; set; } = 1000; // max number of items returned from query
 
         protected DataContext Context { get; private set; }
 
@@ -29,6 +29,7 @@ namespace GStore.Core.Data
         }
 
         #region WRITE METHODS
+
         public async Task<T> InsertAsync( T instance )
         {
             try
@@ -73,7 +74,7 @@ namespace GStore.Core.Data
 
                 if( logical )
                 {
-                    var update = new JsonUpdateDefinition<T>( "deleted:'false'" );
+                    var update = new JsonUpdateDefinition<T>( "deleted:'true'" );
 
                     await Collection.UpdateOneAsync<T>( filter, update );
                 }
@@ -94,9 +95,11 @@ namespace GStore.Core.Data
         {
             Context.Database.DropCollection( CollectionName );
         }
-        #endregion
+
+        #endregion WRITE METHODS
 
         #region QUERY METHODS
+
         public async Task<T> GetSingleAsync( Expression<Func<T, bool>> condition )
         {
             Context.Logger.LogDebug( "REPOSITORY - GetSingle" );
@@ -105,7 +108,7 @@ namespace GStore.Core.Data
             {
                 var query = await Collection.FindAsync<T>( condition );
 
-                var result =  query.SingleOrDefault();
+                var result = query.SingleOrDefault();
 
                 return result;
             }
@@ -181,7 +184,8 @@ namespace GStore.Core.Data
 
                 throw ex;
             }
-        }   
-        #endregion
+        }
+
+        #endregion QUERY METHODS
     }
 }

@@ -28,7 +28,7 @@ namespace GStore.Test
         }
 
         [TestMethod]
-        public async Task GetByLocation_shouldreturn_notemptylist()
+        public async Task GetByLocation_Shouldreturn_Notemptylist()
         {
             var work = new UnitOfWork( _context );
 

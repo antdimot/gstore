@@ -28,7 +28,7 @@ namespace GStore.Test
         }
 
         [TestMethod]
-        public async Task GetList_shouldreturn_notempty_list()
+        public async Task GetList_Shouldreturn_Notemptylist()
         {  
             var work = new UnitOfWork ( _context );
 
@@ -38,7 +38,7 @@ namespace GStore.Test
         }
 
         [TestMethod]
-        public async Task GetSingle_shouldreturn_notnull()
+        public async Task GetSingle_Shouldreturn_Notnull()
         {
             var work = new UnitOfWork( _context );
 
@@ -48,7 +48,7 @@ namespace GStore.Test
         }
 
         [TestMethod]
-        public async Task Insert_shouldreturn_newid()
+        public async Task Insert_Shouldreturn_Newid()
         {
             var work = new UnitOfWork( _context );
 

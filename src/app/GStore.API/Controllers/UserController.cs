@@ -1,16 +1,16 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using GStore.API.Common;
+using GStore.API.Models;
+using GStore.Core;
 using GStore.Core.Data;
 using GStore.Core.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using GStore.API.Models;
-using System.Security.Claims;
 using MongoDB.Bson;
-using GStore.API.Common;
-using Microsoft.AspNetCore.Authorization;
-using GStore.Core;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace GStore.API.Controllers
 {
@@ -20,18 +20,14 @@ namespace GStore.API.Controllers
     public class UserController : BaseController
     {
         public UserController( IConfiguration config, ILogger<UserController> logger, DataContext context ) :
-            base( config, logger, context ) { }
+            base( config, logger, context )
+        { }
 
         /// <summary>
-        /// Provides access token by authentication of credentials 
+        /// Provides access token by authentication of credentials
         /// </summary>
         /// <param name="username">Username</param>
         /// <param name="password">Password</param>
-        /// <returns>
-        /// {
-        ///      "token": "....."
-        /// }
-        /// </returns>
         [HttpPost( "authenticate" )]
         public async Task<IActionResult> Authenticate( string username, string password )
         {
@@ -51,13 +47,14 @@ namespace GStore.API.Controllers
 
             if( user == null ) return Forbid();
 
-            return Ok( new {
+            return Ok( new
+            {
                 token = SecurityService.GenerateToken( user )
             } );
         }
 
         [Authorize( Policy = "AdminApi" )]
-        [HttpGet("list")]
+        [HttpGet( "list" )]
         public async Task<IActionResult> List()
         {
             Logger.LogDebug( "GET[List]" );
