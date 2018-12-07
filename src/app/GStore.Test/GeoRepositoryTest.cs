@@ -26,15 +26,5 @@ namespace GStore.Test
 
             _context = new DataContext( configuration, logger );
         }
-
-        [TestMethod]
-        public async Task GetByLocation_Shouldreturn_Notemptylist()
-        {
-            var work = new UnitOfWork( _context );
-
-            var result = await work.GeoRepository<GeoData>().GetByLocationAsync( -74.046689, 40.68924941, 1.0 );
-
-            Assert.IsTrue( result.Count == 2, "distance is not correct" );
-        }
     }
 }

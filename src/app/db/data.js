@@ -8,8 +8,6 @@ var db = db.getSiblingDB("gstore");
 // hashed value of string P@ssw0rd
 var password = "HY0Xg3z9/kqaY/xf+YU5FA==";
 
-// var user1Id = ObjectId("5aa3a6c360d53c0e5565f3a9");
-// var user2Id = ObjectId("5aa3a6c360d53c0e5565f3a0");
 var user1Id = ObjectId();
 var user2Id = ObjectId();
 

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace GStore.API.Controllers
 {
     [Produces( "application/json" )]
-    [ApiVersion( "1.0" )]
+    [ApiVersion( "1" )]
     [Route( "api/v{version:apiVersion}/user" )]
     public class UserController : BaseController
     {
@@ -72,7 +72,7 @@ namespace GStore.API.Controllers
         {
             Logger.LogDebug( "GET[User]" );
 
-            var oid = GetUserId();
+            var oid = this.GetUserId();
 
             if( !oid.HasValue ) return BadRequest();
 

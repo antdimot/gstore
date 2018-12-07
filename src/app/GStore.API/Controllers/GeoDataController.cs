@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace GStore.API.Controllers
 {
     [Produces( "application/json" )]
-    [ApiVersion( "1.0" )]
+    [ApiVersion( "1" )]
     [Route( "api/v{version:apiVersion}/geodata" )]
     [Authorize]
     public class GeoDataController : BaseController
@@ -55,7 +55,7 @@ namespace GStore.API.Controllers
             var repository = UnitOfWork.GeoRepository<GeoData>();
 
             var items = await repository.GetByLocationAsync( oid.Value, lon, lat, distance, tag );
-            if( items.Count == 0 )
+            if( items.Count() == 0 )
             {
                 return NotFound();
             }
