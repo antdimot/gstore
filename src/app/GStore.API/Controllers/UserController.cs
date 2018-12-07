@@ -72,16 +72,15 @@ namespace GStore.API.Controllers
         {
             Logger.LogDebug( "GET[User]" );
 
-            if( ObjectId.TryParse( id, out ObjectId oid ) )
-            {
-                var user = await UnitOfWork.Repository<User>().GetByIdAsync( oid );
+            var oid = GetUserId();
 
-                if( user == null ) return new NotFoundObjectResult( oid );
+            if( !oid.HasValue ) return BadRequest();
 
-                return Ok( UserResult.Create( user ) );
-            }
+            var user = await UnitOfWork.Repository<User>().GetByIdAsync( oid.Value );
 
-            return BadRequest();
+            if( user == null ) return new NotFoundObjectResult( oid );
+
+            return Ok( UserResult.Create( user ) );
         }
 
         [Authorize]
@@ -90,25 +89,15 @@ namespace GStore.API.Controllers
         {
             Logger.LogDebug( "GET[Info]" );
 
-            if( SecurityService.ReadToken( Request, out ClaimsPrincipal principal ) )
-            {
-                string uid = principal.Claims.Where( c => c.Type == "UserId" )
-                                      .Select( c => c.Value )
-                                      .FirstOrDefault();
+            var oid = GetUserId();
 
-                if( ObjectId.TryParse( uid, out ObjectId oid ) )
-                {
-                    var user = await UnitOfWork.Repository<User>().GetByIdAsync( oid );
+            if( !oid.HasValue ) return BadRequest();
 
-                    if( user == null ) return new NotFoundObjectResult( oid );
+            var user = await UnitOfWork.Repository<User>().GetByIdAsync( oid.Value );
 
-                    return Ok( UserResult.Create( user ) );
-                }
+            if( user == null ) return new NotFoundObjectResult( oid );
 
-                return BadRequest();
-            }
-
-            return BadRequest();
+            return Ok( UserResult.Create( user ) );
         }
     }
 }

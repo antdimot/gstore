@@ -44,16 +44,20 @@ namespace GStore.API.Controllers
         }
 
         [HttpGet( "location" )]
-        public async Task<ObjectResult> GetByLocation( double lon, double lat, double distance, string[] tag = null )
+        public async Task<IActionResult> GetByLocation( double lon, double lat, double distance, string[] tag = null )
         {
             Logger.LogDebug( "GET-LOCATION[GeoData]" );
 
+            var oid = GetUserId();
+
+            if( !oid.HasValue ) return BadRequest();
+        
             var repository = UnitOfWork.GeoRepository<GeoData>();
 
-            var items = await repository.GetByLocationAsync( lon, lat, distance, tag );
+            var items = await repository.GetByLocationAsync( oid.Value, lon, lat, distance, tag );
             if( items.Count == 0 )
             {
-                return NotFound( new { lon, lat, distance } );
+                return NotFound();
             }
 
             var result = items.Select( obj => GeoResult.Create( obj ) );
@@ -66,32 +70,21 @@ namespace GStore.API.Controllers
         {
             Logger.LogDebug( "POST[GeoData]" );
 
-            if( SecurityService.ReadToken( Request, out ClaimsPrincipal principal ) )
+            var oid = GetUserId();
+
+            if( !oid.HasValue ) return BadRequest();
+
+            var repository = UnitOfWork.Repository<GeoData>();
+
+            var result = await repository.InsertAsync( new GeoData
             {
-                // check if content exceeds max allowed size
-                if( content.Length > 512 ) return BadRequest();
+                Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon, lat ) ),
+                Content = content,
+                ContentType = Utils.ContentType.Text,
+                UserId = oid.Value
+            } );
 
-                string uid = principal.Claims.Where( c => c.Type == "UserId" )
-                                             .Select( c => c.Value )
-                                             .FirstOrDefault();
-
-                if( ObjectId.TryParse( uid, out ObjectId oid ) )
-                {
-                    var repository = UnitOfWork.Repository<GeoData>();
-
-                    var result = await repository.InsertAsync( new GeoData
-                    {
-                        Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon, lat ) ),
-                        Content = content,
-                        ContentType = Utils.ContentType.Text,
-                        UserId = ObjectId.Parse( uid )
-                    } );
-
-                    return Ok();
-                }
-            }
-
-            return BadRequest();
+            return Ok();
         }
     }
 }

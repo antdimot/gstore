@@ -8,21 +8,37 @@ var db = db.getSiblingDB("gstore");
 // hashed value of string P@ssw0rd
 var password = "HY0Xg3z9/kqaY/xf+YU5FA==";
 
-var user1Id = ObjectId("5aa3a6c360d53c0e5565f3a9");
+// var user1Id = ObjectId("5aa3a6c360d53c0e5565f3a9");
+// var user2Id = ObjectId("5aa3a6c360d53c0e5565f3a0");
+var user1Id = ObjectId();
+var user2Id = ObjectId();
+
 var addUsers = ()=> {
     db.user.drop();
     db.user.createIndex({'uname':1});
     db.user.insert( [
-    {
-        "_id": user1Id,
-        "un": "admin",
-        "pw": password,
-        "fn": "firstname",
-        "ln": "lastname",
-        "en": true,
-        "au": ["admin","reader","writer"]
-    }
- ] )
+        {
+            "_id": user1Id,
+            "un": "admin",
+            "pw": password,
+            "fn": "firstname_admin",
+            "ln": "lastname_admin",
+            "en": true,
+            "au": ["admin","reader","writer"]
+        }
+    ] );
+
+    db.user.insert( [
+        {
+            "_id": user2Id,
+            "un": "user1",
+            "pw": password,
+            "fn": "firstname_user1",
+            "ln": "lastname_user1",
+            "en": true,
+            "au": ["reader","writer"]
+        }
+    ] );
 };
 addUsers();
 

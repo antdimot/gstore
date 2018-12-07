@@ -3,6 +3,9 @@ using GStore.Core.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
+using System.Linq;
+using System.Security.Claims;
 
 namespace GStore.API.Controllers
 {
@@ -33,6 +36,24 @@ namespace GStore.API.Controllers
 
                 return _tokenService;
             }
+        }
+
+        protected ObjectId? GetUserId()
+        {
+            if( SecurityService.ReadToken( Request, out ClaimsPrincipal principal ) )
+            {
+
+                string uid = principal.Claims.Where( c => c.Type == "UserId" )
+                                             .Select( c => c.Value )
+                                             .Single();
+
+                if( ObjectId.TryParse( uid, out ObjectId oid ) )
+                {
+                    return oid;
+                }
+            }
+
+            return null;
         }
 
         public BaseController( IConfiguration config,

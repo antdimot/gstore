@@ -13,7 +13,7 @@ namespace GStore.Core.Data
 
         public GeoRepository( DataContext context ) : base( context ) { }
 
-        public async Task<IReadOnlyList<T>> GetByLocationAsync( double longitude, double latitude, double distance, string[] tags = null )
+        public async Task<IReadOnlyList<T>> GetByLocationAsync( ObjectId oid, double longitude, double latitude, double distance, string[] tags = null )
         {
             Context.Logger.LogDebug( "REPOSITORY - GetByLocation" );
 
@@ -21,12 +21,13 @@ namespace GStore.Core.Data
             {
                 var filterBuilder = Builders<T>.Filter;
 
+                // set userid filter
+                var filters = new List<FilterDefinition<T>> { filterBuilder.Where( o => o.UserId == oid ) };
+
                 // set geo filter
-                var filters = new List<FilterDefinition<T>> {
-                                    filterBuilder.GeoWithinCenterSphere(
-                                                    o => o.Location,
-                                                    longitude, latitude, radiusOf( distance ) )
-                };
+                filters.Add( filterBuilder.GeoWithinCenterSphere(
+                                            o => o.Location,
+                                            longitude, latitude, radiusOf( distance ) ));
 
                 // set tags filter
                 if( tags != null && tags.Length > 0 )

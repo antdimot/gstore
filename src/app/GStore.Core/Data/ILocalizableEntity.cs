@@ -6,6 +6,8 @@ namespace GStore.Core.Data
     {
         GeoJsonPoint<GeoJson2DGeographicCoordinates> Location { get; set; }
 
+        T UserId { get; set; }
+
         string[] Tags { get; set; }
     }
 }
