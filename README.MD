@@ -15,7 +15,7 @@ Request for getting contents by latitude, longitude and distance (Km).
 
 ### Building and running instructions
 1. git clone https://github.com/antdimot/gstore.git
-2. cd gstore/src/app
+2. cd gstore/src
 3. docker-compose up -d
 4. check api doc at http://localhost:5000/api/swagger
 

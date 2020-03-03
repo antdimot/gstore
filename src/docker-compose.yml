@@ -16,7 +16,7 @@ services:
     - backend
     - frontend
   gstore-db:
-    image: mongo:4.0
+    image: mongo:4
     volumes:
     - gstore-vol-db:/data/db
     - gstore-vol-db:/data/configdb
