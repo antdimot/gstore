@@ -8,15 +8,15 @@ var db = db.getSiblingDB("gstore");
 // hashed value of string P@ssw0rd
 var password = "HY0Xg3z9/kqaY/xf+YU5FA==";
 
-var user1Id = ObjectId();
-var user2Id = ObjectId();
+var adminId = ObjectId();
+var userId = ObjectId();
 
 var addUsers = ()=> {
     db.user.drop();
     db.user.createIndex({'uname':1});
     db.user.insert( [
         {
-            "_id": user1Id,
+            "_id": adminId,
             "un": "admin",
             "pw": password,
             "fn": "firstname_admin",
@@ -28,7 +28,7 @@ var addUsers = ()=> {
 
     db.user.insert( [
         {
-            "_id": user2Id,
+            "_id": userId,
             "un": "user1",
             "pw": password,
             "fn": "firstname_user1",
@@ -43,22 +43,33 @@ addUsers();
 /*
 Add localized contents information.
 */
-var obj1Id = ObjectId();
 var addData = ()=> {
     db.geodata.drop();
     db.geodata.createIndex({ "lo": "2dsphere" })
     db.geodata.insert( [
     {
-        "_id": obj1Id,
+        "_id": ObjectId(),
         "lo": {
             "type": "Point",
             "coordinates": [-74.046689,40.68924941]
          },
         "cn": "Statue of Liberty",
-        "nm": "Station",
+        "nm": "Statue of Liberty",
         "ct": "text/plain",
         "tg": ["monument"],
-        "ui" : user1Id
+        "ui" : userId
+    },
+    {
+        "_id": ObjectId(),
+        "lo": {
+            "type": "Point",
+            "coordinates": [14.772207,40.675149]
+         },
+        "cn": "Statue of Liberty",
+        "nm": "Salerno station",
+        "ct": "text/plain",
+        "tg": ["station"],
+        "ui" : userId
     },
  ] )
 };

@@ -1,13 +1,13 @@
-### Deploy with this production Compose file you can run
+### Deploy for production by using a compose file
     docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+### Exec a bash session (for watching log or upload files)
+    docker exec -it <container name> bash
 
 ### Remove an image
     docker rmi <image>
 
-### Get bash session (for watching log or upload files)
-    docker exec -it <container name> bash
-
-### Remove <none> images after building
+### Remove the images after building
     docker rmi $(docker images -f “dangling=true” -q)
 
 ### Export image

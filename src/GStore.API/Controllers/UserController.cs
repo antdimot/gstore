@@ -49,7 +49,7 @@ namespace GStore.API.Controllers
 
             return Ok( new
             {
-                token = SecurityService.GenerateToken( user )
+                access_token = SecurityService.GenerateToken( user )
             } );
         }
 
