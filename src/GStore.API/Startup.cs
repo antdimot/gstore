@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System;
 
 namespace GStore.API
 {
@@ -46,6 +48,28 @@ namespace GStore.API
             services.AddScoped<DataContext>();
 
             services.AddScoped<SecurityService>();
+
+            services.AddSwaggerGen( c =>
+            {
+                c.SwaggerDoc( "v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "GSTore API",
+                    Description = "A service for storing and retrieving data by latitude and longitude. ",
+                    TermsOfService = new Uri( "https://github.com/antdimot/gstore" ),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Antonio Di Motta",
+                        Email = string.Empty,
+                        Url = new Uri( "https://github.com/antdimot" ),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under Apache License",
+                        Url = new Uri( "https://github.com/antdimot/gstore/blob/master/LICENSE.txt" ),
+                    }
+                } );
+            } );
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env )
@@ -55,14 +79,18 @@ namespace GStore.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseSwagger();
 
+            app.UseSwaggerUI( c =>
+            {
+                c.SwaggerEndpoint( "/swagger/v1/swagger.json", "GSTore API V1" );
+                c.RoutePrefix = string.Empty;
+            } );
+
+            app.UseHttpsRedirection();
             app.UseRouting();
 
-            //app.UseCors( builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader() );
-
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.UseEndpoints( endpoints =>

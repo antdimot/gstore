@@ -17,7 +17,7 @@ Request for getting contents by latitude, longitude and distance (Km).
 1. git clone https://github.com/antdimot/gstore.git
 2. cd gstore/src
 3. docker-compose up -d
-4. check api doc at http://localhost:5000/api/swagger
+4. check api doc at http://localhost:5000/
 
 Another way for testing GSTore is by using PWD, which is a simple, interactive and playground docker environment.
 
@@ -26,4 +26,4 @@ Another way for testing GSTore is by using PWD, which is a simple, interactive a
 
 ### Useful information
 The service uses [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token) for securely transmitting information between parties, so that refer to appsettings.*.json files for update token_appkey with your.
-The gstore database is initialized by docker with contents of file [data.js](https://raw.githubusercontent.com/antdimot/gstore/master/src/app/db/data.js), which contains information for access and some contents.
+The gstore database is initialized by docker with contents of file [data.js](https://raw.githubusercontent.com/antdimot/gstore/master/src/db/data.js), which contains information for access and some contents.
