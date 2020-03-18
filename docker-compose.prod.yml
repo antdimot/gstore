@@ -1,17 +1,16 @@
 version: '3.4'
 
 services:
-  gstore-api:
+  app:
     environment:
       ASPNETCORE_URLS: http://+:5000
-      ASPNETCORE_ENVIRONMENT: Staging
+      ASPNETCORE_ENVIRONMENT: Production
       TZ: Europe/Rome
     ports:
     - "5000:5000"
-  gstore-db:
+  db:
+    restart: always
     environment:
       TZ: Europe/Rome
-    ports:
-    - "27017:27017"
     volumes:
-    - ./db:/docker-entrypoint-initdb.d/data.js
+    - appdata:/docker-entrypoint-initdb.d/data.js

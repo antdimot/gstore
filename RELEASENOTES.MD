@@ -1,10 +1,13 @@
 # RELEASENOTES
 
-### xx-xx-2020
-Upgrade to .net core 3.1
+### 18-03-2020
+- change: upgrade to .net core 3.1
+- change: solution tree refactoring
+- change: update dockerfile
+- change: upgrade compose
 
 #### 08-11-2018
-Update test data and readme.
+- change: update test data and readme
 
 #### 24-09-2018
-First commit.
+- add: first commit

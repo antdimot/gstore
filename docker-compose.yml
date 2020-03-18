@@ -1,30 +1,30 @@
 version: '3.4'
 
 services:
-  gstore-api:
+  app:
     build:
       context: .
-      dockerfile: GStore.API/Dockerfile
+      dockerfile: Dockerfile
     image: antdimot/gstore
     links: 
-    - gstore-db
+    - db
     depends_on:
-    - gstore-db
-    volumes:
-    - gstore-vol-api:/app
+    - db
     networks:
     - backend
     - frontend
-  gstore-db:
+    volumes:
+    - appdata:/app/data
+  db:
     image: mongo:4
     volumes:
-    - gstore-vol-db:/data/db
-    - gstore-vol-db:/data/configdb
+    - database:/data/db
+    - database:/data/configdb
     networks:
     - backend
 volumes:
-  gstore-vol-db:
-  gstore-vol-api:
+  database:
+  appdata:
 networks:
   frontend:
   backend:
