@@ -22,6 +22,12 @@ jobs:
 
     - name: Push image
       run:
-        echo $IMAGE_NAME
+        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
 
-        docker push $IMAGE_NAME:latest
+        VERSION=latest
+        
+        echo IMAGE_ID=$IMAGE_ID
+        echo VERSION=$VERSION
+        
+        docker tag image $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:$VERSION
