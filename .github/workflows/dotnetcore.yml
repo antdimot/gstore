@@ -15,7 +15,5 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: change current folder to src
-      run: cd src
-    - name: build
-      run: dotnet build
+    - name: Dottnet build
+      run: dotnet build .\src\GStore.sln
