@@ -3,7 +3,7 @@ version: '3.4'
 services:
   app:
     build:
-      context: .
+      context: ./src/server
       dockerfile: Dockerfile
     image: antdimot/gstore
     links: 

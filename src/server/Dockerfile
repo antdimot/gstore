@@ -1,8 +1,7 @@
-
 # Build application
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /app/src
-COPY src/ /app/src/
+COPY ./ /app/src/
 RUN dotnet restore 
 WORKDIR /app/src/GStore.API
 RUN dotnet publish -c Release -o /app/publish

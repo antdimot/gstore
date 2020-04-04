@@ -23,9 +23,10 @@ namespace GStore.API.Controllers
         {
             Logger.LogDebug( "GET[Check]" );
 
-            var message = "{ 'message':'GSTore API is up and running!' }";
-
-            return Ok( message );
+            return Ok( new
+            {
+                message = "GSTore API is up and running!"
+            } );
         }
     }
 }
