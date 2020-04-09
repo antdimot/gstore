@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/app/GStore.API/GStore.API.csproj"
+                "${workspaceFolder}/src/server/GStore.API/GStore.API.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
