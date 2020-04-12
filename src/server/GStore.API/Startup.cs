@@ -20,9 +20,21 @@ namespace GStore.API
 
         public IConfiguration Configuration { get; }
 
+        private string _corsPolicy = "gstore_cors_policy";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices( IServiceCollection services )
         {
+            services.AddCors( options =>
+            {
+                options.AddPolicy( _corsPolicy,
+                builder =>
+                {
+                    // Not a permanent solution, but just trying to isolate the problem
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                } );
+            } );
+
             services.AddAuthentication( options => {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -79,6 +91,8 @@ namespace GStore.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors( _corsPolicy );
+
             app.UseSwagger();
 
             app.UseSwaggerUI( c =>
@@ -87,7 +101,7 @@ namespace GStore.API
                 c.RoutePrefix = string.Empty;
             } );
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseAuthentication();

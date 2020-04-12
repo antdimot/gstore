@@ -14,4 +14,4 @@ services:
     ports:
     - "27017:27017"
     volumes:
-    -  ./src/db:/docker-entrypoint-initdb.d
+    - ./src/db:/docker-entrypoint-initdb.d

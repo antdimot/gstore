@@ -1,12 +1,43 @@
 import React from 'react';
-import '../styles/App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 
-function App() {
+import '../styles/App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { Container,Col,Row } from 'react-bootstrap';
+
+import Menu from './Menu'
+import Home from './Home';
+import UserList from './UserList';
+
+const App = () => {
+
   return (
-    <div>
-      <h1>GSTore</h1>
-      <hr></hr>
-    </div>
+    <Router>
+    <Container fluid>
+      <Row>
+        <Col>
+          <Menu></Menu>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Switch>
+            <Route exact path="/home">
+              <Home />
+            </Route>
+            <Route path="/userlist">
+              <UserList></UserList>
+            </Route>
+          </Switch>
+        </Col>
+      </Row>
+    </Container>
+    </Router>
   );
 }
 
