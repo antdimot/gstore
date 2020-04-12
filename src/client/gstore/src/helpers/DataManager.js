@@ -1,8 +1,9 @@
 import axios from 'axios';
+import TokenManager from './TokenManager';
 
 const DataManager = () => {
 
-    let access_token = localStorage.getItem('gstore_token')
+    let access_token = TokenManager.getToken();
 
     return axios.create({
         baseURL: 'http://localhost:5000/api/v1',

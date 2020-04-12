@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { Form,Button } from 'react-bootstrap';
 import DataManager from '../helpers/DataManager';
+import TokenManager from '../helpers/TokenManager';
 
 const Login = (props) => {
     const [validated, setValidated] = useState(false);
@@ -20,11 +21,11 @@ const Login = (props) => {
             
             DataManager().post('/user/authenticate',formData)
                         .then(function (response) {
-                            localStorage.setItem('gstore_token', response.data.access_token);
-                            // console.log(response.data.access_token);
+                            TokenManager.setToken( response.data.access_token );
+                            props.loginCallback();
                         })
                         .catch(function (response) {
-                            localStorage.removeItem('gstore_token');
+                            TokenManager.clearToken();
                             console.log(response);
                         });
         }
