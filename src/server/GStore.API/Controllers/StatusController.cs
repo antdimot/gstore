@@ -28,5 +28,16 @@ namespace GStore.API.Controllers
                 message = "GSTore API is up and running!"
             } );
         }
+
+        [HttpPost( "check" )]
+        public IActionResult Check2()
+        {
+            Logger.LogDebug( "POST[Check]" );
+
+            return Ok( new
+            {
+                message = "GSTore API is up and running!"
+            } );
+        }
     }
 }

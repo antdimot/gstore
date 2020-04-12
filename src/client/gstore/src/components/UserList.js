@@ -1,7 +1,5 @@
 import React, { useState, useEffect }  from 'react';
-
 import { Table } from 'react-bootstrap';
-
 import DataManager from '../helpers/DataManager';
 
 const UserList = (props) => {
@@ -18,16 +16,7 @@ const UserList = (props) => {
                     }); 
       }, []);
 
-    const userItems = users.map((u) =>
-        <tr key={u.username}>
-            <td>{u.firstname}</td>
-            <td>{u.lastname}</td>
-            <td>{u.username}</td>
-            <td>{u.enabled ? "enabled" : "disabled"}</td>
-        </tr>
-    );
-
-    return (
+    return (  
         <Table striped bordered hover>
             <thead>
                 <tr>
@@ -38,7 +27,14 @@ const UserList = (props) => {
                 </tr>
             </thead>
             <tbody>
-                {userItems}              
+            {users.map( (u) => (
+                <tr key={u.username}>
+                    <td>{u.firstname}</td>
+                    <td>{u.lastname}</td>
+                    <td>{u.username}</td>
+                    <td>{u.enabled ? "enabled" : "disabled"}</td>
+                </tr>
+            )) }              
             </tbody>
         </Table>
     );
