@@ -19,6 +19,7 @@ const GeodataList = (props) => {
                 setGeodata(response.data);
             })
             .catch(function (error) {
+                setGeodata([]);
                 console.log(error);
             }); 
     }

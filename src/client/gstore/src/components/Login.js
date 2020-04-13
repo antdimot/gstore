@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import { Form,Button } from 'react-bootstrap';
+import { Form,Button, Fade } from 'react-bootstrap';
 import DataManager from '../helpers/DataManager';
 import TokenManager from '../helpers/TokenManager';
 
 const Login = (props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [message, setMessage] = useState("");
+    const [showMessage, setShowMessage] = useState(false);
 
     const validateForm = () => {
         return username.length > 0 && password.length > 0;
@@ -23,13 +23,13 @@ const Login = (props) => {
             DataManager().post('/user/authenticate',formData)
                         .then(function (response) {
                             TokenManager.setToken( response.data.access_token );
-                            setMessage('');
+                            setShowMessage(false);
                             props.loginCallback();
                         })
                         .catch(function (response) {
                             // TokenManager.clearToken();
                             console.log(response);
-                            setMessage('invalid credentials');
+                            setShowMessage(true);
                         });
         }
 
@@ -58,9 +58,12 @@ const Login = (props) => {
                 <Button variant="primary" disabled={!validateForm()} type="submit">
                     Login
                 </Button>
-                {'  '}
-                <Form.Label>{message}</Form.Label>
             </Form>
+            <Fade in={showMessage}>
+                <div id="example-fade-text">
+                Invalid credentials
+                </div>
+            </Fade>
         </>
     )
 };
