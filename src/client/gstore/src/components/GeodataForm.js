@@ -2,24 +2,29 @@ import React, { useState  }  from 'react';
 import DataManager from '../helpers/DataManager';
 import { Col, Form, Button } from 'react-bootstrap';
 
+import { useHistory } from "react-router-dom";
+
 const GeodataForm = (props) => {
+    let history = useHistory();
+
     const [name, setName] = useState('');
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
     const [tag, setTag] = useState('');
     const [content, setContent] = useState('');
+    const [message, setMessage] = useState("");
 
     const submitHandler = (event) => {
         var formData = new FormData(event.target);
 
-        console.log(event.target);
-
         DataManager().post('/geodata',formData)
             .then(function (response) {                 
                 console.log(response);
+                history.push("/geodatalist");
             })
             .catch(function (error) {
                 console.log(error);
+                setMessage('error on saving')
             });
 
         event.preventDefault();
@@ -49,13 +54,13 @@ const GeodataForm = (props) => {
                 <Form.Row>
                     <Form.Group as={Col} controlId="formGridLatitude">
                         <Form.Label>Latitude</Form.Label>
-                        <Form.Control name="lat" required type="text" placeholder="enter latitude position"
+                        <Form.Control type="text" name="lat" required placeholder="enter latitude position"
                             value={latitude} onChange={e => setLatitude(e.target.value)} />
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="formGridLongitude">
                         <Form.Label>Longitude</Form.Label>
-                        <Form.Control name="lon" required type="text" placeholder="enter longitude position"
+                        <Form.Control type="text" name="lon" required placeholder="enter longitude position"
                             value={longitude} onChange={e => setLongitude(e.target.value)} />
                     </Form.Group>
                 </Form.Row>
@@ -67,7 +72,8 @@ const GeodataForm = (props) => {
 
                 <Button variant="primary" type="submit">
                     Submit
-                </Button>
+                </Button> {'  '}
+                <Form.Label>{message}</Form.Label>
             </Form>
         </>
     )

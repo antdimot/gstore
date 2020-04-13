@@ -32,7 +32,7 @@ const GeodataList = (props) => {
                 </thead>
                 <tbody>
                 { geodata.map( (g) => (
-                    <tr key={g.name}>
+                    <tr key={g.id}>
                         <td>{g.name}</td>
                         <td>({g.lat} {g.lon})</td>
                         <td>{g.content}</td>
