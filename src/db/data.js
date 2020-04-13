@@ -65,10 +65,22 @@ var addData = ()=> {
             "type": "Point",
             "coordinates": [14.772207,40.675149]
          },
-        "cn": "Salerno station",
-        "nm": "Salerno station",
+        "cn": "Salerno",
+        "nm": "Salerno",
         "ct": "text/plain",
-        "tg": ["station"],
+        "tg": ["city"],
+        "ui" : userId
+    },
+    {
+        "_id": ObjectId(),
+        "lo": {
+            "type": "Point",
+            "coordinates": [14.268120,40.851799]
+         },
+        "cn": "Naples",
+        "nm": "Naples",
+        "ct": "text/plain",
+        "tg": ["city"],
         "ui" : userId
     },
  ] )

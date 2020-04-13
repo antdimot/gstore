@@ -48,7 +48,7 @@ namespace GStore.Core.Data
             }
         }
 
-        public async void Update( T instance )
+        public async Task<long> Update( T instance )
         {
             try
             {
@@ -56,7 +56,9 @@ namespace GStore.Core.Data
 
                 var update = new ObjectUpdateDefinition<T>( instance );
 
-                await Collection.UpdateOneAsync<T>( filter, update );
+                var result = await Collection.UpdateOneAsync<T>( filter, update );
+
+                return result.ModifiedCount;
             }
             catch( Exception ex )
             {
@@ -66,22 +68,13 @@ namespace GStore.Core.Data
             }
         }
 
-        public async void Delete( ObjectId id, bool logical = true )
+        public async Task<long> Delete( Expression<Func<T, bool>> filter )
         {
             try
             {
-                Expression<Func<T, bool>> filter = x => x.Id == id;
+                var result = await Collection.DeleteOneAsync<T>( filter );
 
-                if( logical )
-                {
-                    var update = new JsonUpdateDefinition<T>( "deleted:'true'" );
-
-                    await Collection.UpdateOneAsync<T>( filter, update );
-                }
-                else
-                {
-                    Collection.DeleteOne<T>( filter );
-                }
+                return result.DeletedCount;
             }
             catch( Exception ex )
             {

@@ -64,6 +64,25 @@ namespace GStore.API.Controllers
             return Ok( result );
         }
 
+        [HttpPost( "delete" )]
+        public async Task<IActionResult> Post( string id )
+        {
+            Logger.LogDebug( "POST-DELETE[GeoData]" );
+
+            if( !ObjectId.TryParse( id, out ObjectId oid ) )
+                return BadRequest();
+
+            var uid = GetUserId();
+
+            var result = await UnitOfWork.Repository<GeoData>()
+                                         .Delete( o => o.Id == oid && o.UserId == uid );
+
+            if( result > 0 )
+                return Ok();
+                    
+            return NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post( string lon, string lat, string name, string content )
         {

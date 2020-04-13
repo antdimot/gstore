@@ -11,9 +11,6 @@ namespace GStore.Core.Domain
         [BsonElement( "_id" )]
         public ObjectId Id { get; set; }
 
-        [BsonElement( "de" )]
-        public bool Deleted { get; set; } = false;
-
         [BsonElement( "cn" )]
         public Object Content { get; set; }
 

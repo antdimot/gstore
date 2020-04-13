@@ -2,7 +2,10 @@ import React from 'react';
 
 const Home = (props) => {
     return (
-        <h2>Welcome</h2>
+        <>
+            <br/>
+            <h3>Welcome to GSTore application management</h3>
+        </>
     )
 };
 
