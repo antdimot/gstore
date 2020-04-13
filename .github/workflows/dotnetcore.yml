@@ -16,4 +16,4 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Build GSTore application
-      run: dotnet build ./src/GStore.sln
+      run: dotnet build ./src/server/GStore.sln

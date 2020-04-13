@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
@@ -14,48 +13,49 @@ import TokenManager from '../helpers/TokenManager'
 import Menu from './Menu'
 import Home from './Home';
 import Login from './Login';
-import UserList from './UserList';
 import GeodataList from './GeodataList';
 
-const App = () => {
+import { useHistory } from "react-router-dom";
+
+const App = (props) => {
+  let history = useHistory();
   const [isLogged,setLogged] = useState(false);
 
   useEffect( () => {
     setLogged(TokenManager.hasToken);
   },[])
 
-  const loginCallback = () => setLogged(true);
-  const logoutCallback = () => setLogged(false);
+  const loginCallback = () => {
+    history.push("/home");
+    setLogged(true);
+  } 
+  const logoutCallback = () => {
+    history.push("/");
+    setLogged(false);
+  } 
 
   return isLogged ? (
-    <Router>  
       <Container>
         <Row>
           <Col>
             <Menu logoutCallback={logoutCallback}></Menu>
           </Col>
         </Row>
-        <Row className="justify-content-md-center">
+        <Row >
           <Switch>
             <Route path="/home">
               <Col>
                 <Home />
               </Col>
             </Route>
-            <Route path="/userlist">
-              <Col md={{ offset: 1, span: 7 }}>
-                <UserList />
-              </Col>
-            </Route>
             <Route path="/geodatalist">
-              <Col md={{ offset: 1, span: 7 }}>
+              <Col>
                 <GeodataList />
               </Col>
             </Route>
           </Switch>
         </Row>
       </Container>
-    </Router>
   ) : (
       <Container>
         <Row>

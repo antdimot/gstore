@@ -2,17 +2,18 @@ import React, { useState, useEffect }  from 'react';
 import { Table } from 'react-bootstrap';
 import DataManager from '../helpers/DataManager';
 
-const GeodataList = () => {
+const GeodataList = (props) => {
     const [geodata, setGeodata] = useState([]);
 
     useEffect( () => {
         DataManager().get('/geodata/list')
-                    .then(function (response) {                 
-                        setGeodata(response.data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    }); 
+            .then(function (response) {                 
+                setGeodata(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            }); 
+        
       }, []);
 
     return (  
