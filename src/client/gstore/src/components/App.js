@@ -14,6 +14,7 @@ import Menu from './Menu'
 import Home from './Home';
 import Login from './Login';
 import GeodataList from './GeodataList';
+import GeodataForm from './GeodataForm';
 
 import { useHistory } from "react-router-dom";
 
@@ -51,6 +52,11 @@ const App = (props) => {
             <Route path="/geodatalist">
               <Col>
                 <GeodataList />
+              </Col>
+            </Route>
+            <Route path="/geodataform">
+              <Col>
+                <GeodataForm />
               </Col>
             </Route>
           </Switch>

@@ -65,9 +65,12 @@ namespace GStore.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post( double lon, double lat, string content )
+        public async Task<IActionResult> Post( double? lon, double? lat, string name, string content )
         {
             Logger.LogDebug( "POST[GeoData]" );
+
+            if( !lon.HasValue || !lat.HasValue || name == null || content == null )
+                return BadRequest();
 
             var oid = GetUserId();
 
@@ -77,10 +80,11 @@ namespace GStore.API.Controllers
 
             var result = await repository.InsertAsync( new GeoData
             {
-                Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon, lat ) ),
+                Location = new GeoJsonPoint<GeoJson2DGeographicCoordinates>( new GeoJson2DGeographicCoordinates( lon.Value, lat.Value ) ),
                 Content = content,
                 ContentType = Utils.ContentType.Text,
-                UserId = oid.Value
+                UserId = oid.Value,
+                Name = name
             } );
 
             return Ok();

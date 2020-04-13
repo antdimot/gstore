@@ -16,25 +16,31 @@ const GeodataList = (props) => {
         
       }, []);
 
-    return (  
-        <Table striped bordered>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
-                </tr>
-            </thead>
-            <tbody>
-            { geodata.map( (g) => (
-                <tr key={g.name}>
-                    <td>{g.name}</td>
-                    <td>{g.lat}</td>
-                    <td>{g.lon}</td>
-                </tr>
-            )) }              
-            </tbody>
-        </Table>
+    return (
+        <>
+            <br/>
+            <h4>Geodata List</h4>
+            <hr/>
+            <a href="/geodataform">add</a>
+            <Table striped bordered size="sm">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Position (lat,lon)</th>
+                        <th>Content</th>
+                    </tr>
+                </thead>
+                <tbody>
+                { geodata.map( (g) => (
+                    <tr key={g.name}>
+                        <td>{g.name}</td>
+                        <td>({g.lat} {g.lon})</td>
+                        <td>{g.content}</td>
+                    </tr>
+                )) }              
+                </tbody>
+            </Table>
+        </>
     );
 }
 
