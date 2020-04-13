@@ -2,13 +2,13 @@ import React, { useState, useEffect }  from 'react';
 import { Table } from 'react-bootstrap';
 import DataManager from '../helpers/DataManager';
 
-const UserList = (props) => {
-    const [users, setUsers] = useState([]);
+const GeodataList = () => {
+    const [geodata, setGeodata] = useState([]);
 
     useEffect( () => {
-        DataManager().get('/user/list')
+        DataManager().get('/geodata/list')
                     .then(function (response) {                 
-                        setUsers(response.data);
+                        setGeodata(response.data);
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -19,19 +19,17 @@ const UserList = (props) => {
         <Table striped bordered>
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                    <th>Status</th>
+                    <th>Name</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
                 </tr>
             </thead>
             <tbody>
-            {users.map( (u) => (
-                <tr key={u.username}>
-                    <td>{u.firstname}</td>
-                    <td>{u.lastname}</td>
-                    <td>{u.username}</td>
-                    <td>{u.enabled ? "enabled" : "disabled"}</td>
+            { geodata.map( (g) => (
+                <tr key={g.name}>
+                    <td>{g.name}</td>
+                    <td>{g.lat}</td>
+                    <td>{g.lon}</td>
                 </tr>
             )) }              
             </tbody>
@@ -39,5 +37,4 @@ const UserList = (props) => {
     );
 }
 
-
-export default UserList;
+export default GeodataList;

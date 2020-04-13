@@ -15,6 +15,7 @@ import Menu from './Menu'
 import Home from './Home';
 import Login from './Login';
 import UserList from './UserList';
+import GeodataList from './GeodataList';
 
 const App = () => {
   const [isLogged,setLogged] = useState(false);
@@ -42,8 +43,13 @@ const App = () => {
               </Col>
             </Route>
             <Route path="/userlist">
-              <Col md={{ offset: 1, span: 8 }}>
+              <Col md={{ offset: 1, span: 7 }}>
                 <UserList />
+              </Col>
+            </Route>
+            <Route path="/geodatalist">
+              <Col md={{ offset: 1, span: 7 }}>
+                <GeodataList />
               </Col>
             </Route>
           </Switch>
@@ -51,18 +57,13 @@ const App = () => {
       </Container>
     </Router>
   ) : (
-    <Router>
       <Container>
         <Row>
-          <Col md={{ offset: 2, span: 6 }}>
+          <Col md={{ offset: 2, span: 5 }}>
             <Login loginCallback={loginCallback}/>
           </Col>
         </Row>
       </Container>
-      <Switch>
-        <Route path="/home"/>
-      </Switch>
-    </Router>
   )
 }
 

@@ -37,24 +37,30 @@ const Login = (props) => {
     }
 
     return (
-        <Form noValidate validated={validated} onSubmit={submitHandler}>
-            <Form.Group controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control name="username" type="text" placeholder="username" required
-                    value={username}
-                    onChange={e => setUsername(e.target.value)} />
-            </Form.Group>
+        <>
+            <h1>GSTore management</h1>
+            <br/>
+            <h3>Authentication</h3>
 
-            <Form.Group controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control name="password" type="password" placeholder="Password" required
-                    value={password}
-                    onChange={e => setPassword(e.target.value)} />
-            </Form.Group>
-            <Button variant="primary" disabled={!validateForm()} type="submit">
-                Login
-            </Button>
-        </Form>
+            <Form noValidate validated={validated} onSubmit={submitHandler}>
+                <Form.Group controlId="formBasicEmail">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control name="username" type="text" placeholder="username" required
+                        value={username}
+                        onChange={e => setUsername(e.target.value)} />
+                </Form.Group>
+
+                <Form.Group controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control name="password" type="password" placeholder="Password" required
+                        value={password}
+                        onChange={e => setPassword(e.target.value)} />
+                </Form.Group>
+                <Button variant="primary" disabled={!validateForm()} type="submit">
+                    Login
+                </Button>
+            </Form>
+        </>
     )
 };
 

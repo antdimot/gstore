@@ -24,7 +24,6 @@ namespace GStore.API.Controllers
             base( config, logger, context )
         { }
 
-        [Authorize( Policy = "AdminApi" )]
         [HttpGet( "{id}" )]
         public async Task<IActionResult> Get( string id )
         {
@@ -85,6 +84,43 @@ namespace GStore.API.Controllers
             } );
 
             return Ok();
+        }
+
+        [HttpGet( "list" )]
+        public async Task<IActionResult> List()
+        {
+            Logger.LogDebug( "GET-LIST[GeoData]" );
+
+            var oid = GetUserId();
+
+            if( oid.HasValue )
+            {
+                var items = await UnitOfWork.Repository<GeoData>()
+                                             .GetListAsync( o => o.UserId == oid.Value );
+
+                if( items.Count() == 0 )
+                {
+                    return NotFound();
+                }
+
+                var result = items.Select( obj => GeoResult.Create( obj ) );
+
+                return Ok( result );
+            }          
+
+            return BadRequest();
+        }
+
+        [HttpGet( "all" )]
+        [Authorize( Policy = "AdminApi" )]
+        public async Task<IActionResult> All()
+        {
+            Logger.LogDebug( "GET-ALL[GeoData]" );
+
+            var items = await UnitOfWork.Repository<GeoData>()
+                                        .GetListAsync();
+
+            return Ok( items.Select( obj => GeoResult.Create( obj ) ) );
         }
     }
 }

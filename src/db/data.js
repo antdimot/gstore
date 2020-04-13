@@ -65,7 +65,7 @@ var addData = ()=> {
             "type": "Point",
             "coordinates": [14.772207,40.675149]
          },
-        "cn": "Statue of Liberty",
+        "cn": "Salerno station",
         "nm": "Salerno station",
         "ct": "text/plain",
         "tg": ["station"],
