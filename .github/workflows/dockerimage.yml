@@ -16,7 +16,7 @@ jobs:
       
     - name: Build image
       run:
-        docker build . --file Dockerfile --tag $IMAGE_NAME
+        docker build ./src/sever --file Dockerfile --tag $IMAGE_NAME
   
     - name: Log into registry
       run:  docker login --username antdimot --password ${{ secrets.GITHUB_WORKFLOW_TOKEN }}
