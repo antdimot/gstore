@@ -1,6 +1,17 @@
 version: '3.4'
 
 services:
+  web:
+    build:
+      context: ./src/client/gstore
+      dockerfile: Dockerfile
+    image: antdimot/gstoreweb
+    links: 
+    - app
+    depends_on:
+    - app
+    networks:
+    - frontend
   app:
     build:
       context: ./src/server
