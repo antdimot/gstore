@@ -1,22 +1,15 @@
 version: '3.4'
 
 services:
-  web:
-    build:
-      context: ./src/client/gstore
-      dockerfile: Dockerfile
-    image: antdimot/gstoreweb
-    links: 
-    - app
-    depends_on:
-    - app
-    networks:
-    - frontend
-  app:
-    build:
-      context: ./src/server
-      dockerfile: Dockerfile
-    image: antdimot/gstore
+  # web:
+  #   links: 
+  #   - srv
+  #   depends_on:
+  #   - srv
+  #   networks:
+  #   - frontend
+  #   container_name: gstore-web
+  srv:
     links: 
     - db
     depends_on:
@@ -24,18 +17,17 @@ services:
     networks:
     - backend
     - frontend
-    volumes:
-    - appdata:/app/data
+    container_name: gstore-server
   db:
     image: mongo:4
     volumes:
-    - database:/data/db
-    - database:/data/configdb
+    - gstore-db:/data/db
+    - gstore-db:/data/configdb
     networks:
     - backend
+    container_name: gstore-db
 volumes:
-  database:
-  appdata:
+  gstore-db:
 networks:
   frontend:
   backend:

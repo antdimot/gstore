@@ -17,11 +17,7 @@ Request for getting contents by latitude, longitude and distance (Km).
 1. git clone https://github.com/antdimot/gstore.git
 2. cd gstore
 3. docker-compose up -d
-4. check api doc at http://localhost:5000/
-
-Another way for testing GSTore is by using PWD, which is a simple, interactive and playground docker environment.
-
-[![Try in PWD](https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/antdimot/gstore/master/stack.yml)
+4. check api doc at http://localhost:5000/api/v1/status/check
 
 
 ### Useful information
