@@ -1,14 +1,9 @@
 version: '3.4'
 
 services:
-  # web:
-  #   environment:
-  #     TZ: Europe/Rome
-  #   ports:
-  #     - "8080:80"
   srv:
     build:
-      context: ./src/server
+      context: ./src
       dockerfile: Dockerfile
     image: gstore
     environment:
@@ -18,9 +13,10 @@ services:
     ports:
     - "5000:5000"
   db:
+    image: mongo:4
     environment:
       TZ: Europe/Rome
     ports:
     - "27017:27017"
     volumes:
-    - ./db:/docker-entrypoint-initdb.d
+    - ./db:/docker-entrypoint-initdb.d # this is for populating db with test data only, remove this line for production environment

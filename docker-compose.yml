@@ -1,33 +1,22 @@
 version: '3.4'
 
 services:
-  # web:
-  #   links: 
-  #   - srv
-  #   depends_on:
-  #   - srv
-  #   networks:
-  #   - frontend
-  #   container_name: gstore-web
   srv:
-    links: 
-    - db
     depends_on:
     - db
     networks:
     - backend
     - frontend
-    container_name: gstore-server
+    container_name: gst-server
   db:
-    image: mongo:4
     volumes:
-    - gstore-db:/data/db
-    - gstore-db:/data/configdb
+    - gstore:/data/db
+    - gstore:/data/configdb
     networks:
     - backend
-    container_name: gstore-db
+    container_name: gst-db
 volumes:
-  gstore-db:
+  gstore:
 networks:
   frontend:
   backend:
