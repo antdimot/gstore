@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 env:
-  IMAGE_NAME: antdimot/gstore
+  IMAGE_NAME: gstore
 
 jobs:
   build:
@@ -16,10 +16,10 @@ jobs:
       
     - name: Build image
       run:
-        docker build ./src/server -f ./src/server/Dockerfile -t $IMAGE_NAME
+        docker build ./src -f ./src/Dockerfile -t $IMAGE_NAME
   
     - name: Log into registry
-      run:  docker login --username antdimot --password ${{ secrets.GITHUB_WORKFLOW_TOKEN }}
+      run:  docker login --username antdimot --password ${{ secrets.DOCKER_HUB }}
 
     - name: Push image
       run:
