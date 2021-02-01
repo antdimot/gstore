@@ -21,7 +21,8 @@ jobs:
         docker build ./src -f ./src/Dockerfile -t $IMAGE_NAME
   
     - name: Log into registry
-      run:  docker login --username antdimot --password ${{ secrets.DOCKER_HUB }}
+      run:
+        docker login --username antdimot --password ${{ secrets.DOCKER_HUB }}
 
     - name: Push image
       run:
