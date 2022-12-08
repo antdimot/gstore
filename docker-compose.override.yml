@@ -11,9 +11,9 @@ services:
       ASPNETCORE_ENVIRONMENT: Staging
       TZ: Europe/Rome
     ports:
-    - "5000:5000"
+    - "5010:5000"
   db:
-    image: mongo:4
+    image: mongo:5
     environment:
       TZ: Europe/Rome
     ports:
