@@ -5,18 +5,18 @@ using Serilog;
 
 namespace GStore.API
 {
-#pragma warning disable CS1591
     public class Program
     {
         public static int Main( string[] args )
         {
             try
             {
-                var hostBuilder = WebHost.CreateDefaultBuilder( args );
+                var hostBuilder = WebHost.CreateDefaultBuilder(args);
 
-                var host = hostBuilder.UseStartup<Startup>()
-                                      .UseSerilog( ( hostingContext, loggerConfiguration ) =>
-                                                        loggerConfiguration.ReadFrom.Configuration( hostingContext.Configuration ) ).Build();
+                IWebHost host = hostBuilder.UseStartup<Startup>()
+                                           .Build();
+                                      //.UseSerilog( ( hostingContext, loggerConfiguration ) =>
+                                      //                  loggerConfiguration.ReadFrom.Configuration( hostingContext.Configuration ) ).Build();
 
                 host.Run();
 
@@ -34,5 +34,4 @@ namespace GStore.API
             }
         }     
     }
-#pragma warning restore CS1591
 }
