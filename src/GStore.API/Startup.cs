@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using System;
+using Asp.Versioning;
+using Scalar.AspNetCore;
 
 namespace GStore.API
 {
@@ -55,33 +55,18 @@ namespace GStore.API
 
             services.AddControllers();
 
-            services.AddApiVersioning();           
+            services.AddApiVersioning( options =>
+            {
+                options.DefaultApiVersion = new ApiVersion( 1, 0 );
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.ReportApiVersions = true;
+            } ).AddMvc();
 
             services.AddScoped<DataContext>();
 
             services.AddScoped<SecurityService>();
 
-            services.AddSwaggerGen( c =>
-            {
-                c.SwaggerDoc( "v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "GSTore API",
-                    Description = "A service for storing and retrieving data by latitude and longitude. ",
-                    TermsOfService = new Uri( "https://github.com/antdimot/gstore" ),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Antonio Di Motta",
-                        Email = string.Empty,
-                        Url = new Uri( "https://github.com/antdimot" ),
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Use under Apache License",
-                        Url = new Uri( "https://github.com/antdimot/gstore/blob/master/LICENSE.txt" ),
-                    }
-                } );
-            } );
+            services.AddOpenApi();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env )
@@ -93,14 +78,6 @@ namespace GStore.API
 
             app.UseCors( _corsPolicy );
 
-            app.UseSwagger();
-
-            app.UseSwaggerUI( c =>
-            {
-                c.SwaggerEndpoint( "/swagger/v1/swagger.json", "GSTore API V1" );
-                c.RoutePrefix = string.Empty;
-            } );
-
             //app.UseHttpsRedirection();
             app.UseRouting();
 
@@ -110,6 +87,8 @@ namespace GStore.API
             app.UseEndpoints( endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapOpenApi();
+                endpoints.MapScalarApiReference();
             } );
         }
     }

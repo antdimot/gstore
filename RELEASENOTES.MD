@@ -1,5 +1,8 @@
 # RELEASENOTES
 
+### 19-05-2026
+- upgrade to .net 10
+
 ### 07-12-2022
 - update to .net 7
 - update to mongodb 5

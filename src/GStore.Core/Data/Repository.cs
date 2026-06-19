@@ -54,9 +54,7 @@ namespace GStore.Core.Data
             {
                 Expression<Func<T, bool>> filter = x => x.Id == instance.Id;
 
-                var update = new ObjectUpdateDefinition<T>( instance );
-
-                var result = await Collection.UpdateOneAsync<T>( filter, update );
+                var result = await Collection.ReplaceOneAsync( filter, instance );
 
                 return result.ModifiedCount;
             }

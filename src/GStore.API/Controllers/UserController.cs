@@ -1,4 +1,5 @@
-﻿using GStore.API.Common;
+﻿using Asp.Versioning;
+using GStore.API.Common;
 using GStore.API.Models;
 using GStore.Core;
 using GStore.Core.Data;

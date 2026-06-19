@@ -1,5 +1,5 @@
 # Build application
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /app/src
 COPY ./GStore.sln /app/src/
 COPY ./GStore.Core/ /app/src/GStore.Core/
@@ -9,7 +9,7 @@ RUN dotnet restore
 RUN dotnet publish -c Release -o /app/publish
 
 # Create image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
 EXPOSE 5000
