@@ -11,16 +11,11 @@ using Scalar.AspNetCore;
 
 namespace GStore.API
 {
-    public class Startup
+    public class Startup(IConfiguration configuration)
     {
-        public Startup( IConfiguration configuration )
-        {
-            Configuration = configuration;
-        }
+        public IConfiguration Configuration { get; } = configuration;
 
-        public IConfiguration Configuration { get; }
-
-        private string _corsPolicy = "gstore_cors_policy";
+        private readonly string _corsPolicy = "gstore_cors_policy";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices( IServiceCollection services )
@@ -44,14 +39,11 @@ namespace GStore.API
                 options.TokenValidationParameters = new SecurityService( Configuration ).CreateValidationParams();
             } );
 
-            // set authorization policy for api accessing
-            services.AddAuthorization( options =>
-            {
-                options.AddPolicy( "AdminApi", policy =>
+            services.AddAuthorizationBuilder()
+                .AddPolicy( "AdminApi", policy =>
                     policy.RequireAssertion( context =>
                          context.User.HasClaim( c =>
                               c.Type == "UserAuthz" && c.Value.Contains("admin") ) ) );
-            } );
 
             services.AddControllers();
 

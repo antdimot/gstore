@@ -1,6 +1,7 @@
 ﻿using System;
-using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 
 namespace GStore.API
@@ -11,10 +12,10 @@ namespace GStore.API
         {
             try
             {
-                var hostBuilder = WebHost.CreateDefaultBuilder(args);
+                var hostBuilder = Host.CreateDefaultBuilder(args)
+                                       .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
 
-                IWebHost host = hostBuilder.UseStartup<Startup>()
-                                           .Build();
+                IHost host = hostBuilder.Build();
                                       //.UseSerilog( ( hostingContext, loggerConfiguration ) =>
                                       //                  loggerConfiguration.ReadFrom.Configuration( hostingContext.Configuration ) ).Build();
 

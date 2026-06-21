@@ -1,6 +1,6 @@
 # GStore — Agent Instructions
 
-GStore is a geolocation content storage REST API built with ASP.NET Core 7.0 and MongoDB. It lets clients store arbitrary content tagged with GPS coordinates and retrieve it by proximity.
+GStore is a geolocation content storage REST API built with ASP.NET Core 10.0 and MongoDB. It lets clients store arbitrary content tagged with GPS coordinates and retrieve it by proximity.
 
 ## Build & Test
 
